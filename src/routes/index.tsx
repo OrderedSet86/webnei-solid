@@ -1,5 +1,7 @@
 import Sidebar from '~/components/Sidebar'
-import { createSignal, onMount } from 'solid-js'
+import { appState, setAppState } from '~/state/appState'
+import { onMount } from 'solid-js'
+import { produce } from 'solid-js/store'
 import { HopeProvider } from '@hope-ui/solid'
 import { Box, Grid, GridItem } from '@hope-ui/solid'
 
@@ -7,15 +9,14 @@ const gap = 6;
 const topHeight = 50;
 
 export default function Home() {
-  const [rect, setRect] = createSignal({
-    height: window.innerHeight,
-    width: window.innerWidth
-  });
-  const lowerHeight = () => rect().height - topHeight - gap;
-  const rightWidth = () => rect().width / 2 - gap;
+  const lowerHeight = () => appState.height - topHeight - gap;
+  const rightWidth = () => appState.width / 2 - gap;
 
   const handler = (event: Event) => {
-    setRect({ height: window.innerHeight, width: window.innerWidth });
+    setAppState(produce((s) => {
+      s.height = window.innerHeight;
+      s.width = window.innerWidth;
+    }));
   };
 
   onMount(() => {

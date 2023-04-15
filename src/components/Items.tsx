@@ -9,6 +9,7 @@ import "./Items.css"
 
 // Modified from https://www.solidjs.com/examples/ethasketch
 
+
 function randomHexColorString(): string {
     return "#" + Math.floor(Math.random() * 16777215).toString(16);
 }

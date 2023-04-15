@@ -1,7 +1,7 @@
-import Items from "~/components/Items";
 import type { JSX } from 'solid-js';
-import { Box, Center, Grid, GridItem, Input } from '@hope-ui/solid'
-import { debounce } from "@solid-primitives/scheduled";
+import { Center, Grid, GridItem } from '@hope-ui/solid'
+import Items from "~/components/Items";
+import SearchBar from "~/components/SearchBar";
 
 
 interface SidebarProps {
@@ -12,15 +12,6 @@ interface SidebarProps {
 const searchBoxHeight = 50;
 
 const Sidebar = (props: SidebarProps): JSX.Element => {
-    const updateSearch = debounce((search: string) => {
-        console.log(search);
-    }, 250)
-
-    const handleInput = (event: Event) => {
-        if (event.target) {
-            updateSearch((event.target as HTMLInputElement).value);
-        }
-    }
 
     return (
         <>
@@ -31,7 +22,7 @@ const Sidebar = (props: SidebarProps): JSX.Element => {
                     </Center>
                 </GridItem>
                 <GridItem bg="blue">
-                    <Input placeholder="Search" height="100%" color="white" onInput={handleInput}/>
+                    <SearchBar/>
                 </GridItem>
             </Grid>
         </>
