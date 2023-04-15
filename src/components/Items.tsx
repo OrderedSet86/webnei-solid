@@ -36,7 +36,7 @@ function Items(props: {ownWidth: number}) {
           each={Array.from({ length: gridSideLength() ** 2 })}
           fallback={"Input a grid side length."}
         >
-          {(lidx, index) => (
+          {(obj, index) => (
             <div
               class="cell"
               onMouseEnter={(event) => {
