@@ -1,19 +1,20 @@
-import { Title } from "solid-start";
-import Counter from "~/components/Counter";
+import Sidebar from "~/components/Sidebar"
+import { HopeProvider } from '@hope-ui/solid'
+import { Box, Grid, GridItem } from '@hope-ui/solid'
 
 export default function Home() {
   return (
     <main>
-      <Title>Hello World</Title>
-      <h1>Hello world!</h1>
-      <Counter />
-      <p>
-        Visit{" "}
-        <a href="https://start.solidjs.com" target="_blank">
-          start.solidjs.com
-        </a>{" "}
-        to learn how to build SolidStart apps.
-      </p>
+      <HopeProvider>
+        <Box height="100vh" bg="black" padding={0} margin={0}>
+          <Grid templateColumns="repeat(2, 1fr)" gap={6} height="100vh">
+            <GridItem bg="tomato"/>
+            <GridItem bg="tomato">
+              <Sidebar />
+            </GridItem>
+          </Grid>
+        </Box>
+      </HopeProvider>
     </main>
   );
 }
