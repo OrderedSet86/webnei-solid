@@ -1,28 +1,61 @@
 import {
+    createEffect,
     createMemo,
     createSignal,
     Index,
+    Show,
 } from "solid-js";
+import { appState, setAppState } from '~/state/appState'
+import { gql, createGraphQLClient } from "@solid-primitives/graphql"
+import { Image } from "@hope-ui/solid";
 
 import "./Items.css"
 
-
 // Modified from https://www.solidjs.com/examples/ethasketch
 
+const boxWidth = 40;
+const baseImagePath = "nei_images";
 
 function randomHexColorString(): string {
     return "#" + Math.floor(Math.random() * 16777215).toString(16);
 }
 
-
 function Items(props: {ownWidth: number}) {
-  const [pixelWidth, setPixelWidth] = createSignal(40);
-  const gridSideLength = () => Math.floor(props.ownWidth / pixelWidth());
-
-  // const [gridSideLength, setGridSideLength] = createSignal(20);
+  // Layout
+  const gridSideLength = () => Math.floor(props.ownWidth / boxWidth);
   const gridTemplateString = createMemo(() =>
-    `repeat(${gridSideLength()}, ${pixelWidth()}px)`
+    `repeat(${gridSideLength()}, ${boxWidth}px)`
   );
+  const numBoxes = createMemo(() => gridSideLength() ** 2);
+
+  // GraphQL
+  const graphQLClient = createGraphQLClient("http://localhost:5000/graphql");
+  const [data, {refetch}] = graphQLClient<{ getNSidebarItems: []}>(
+    gql`
+      query SidebarItems(
+        $limit: Int!,
+        $search: String!,
+        $mode: String!
+      ) {
+        getNSidebarItems(limit: $limit, search: $search, mode: $mode) {
+          itemId
+          localizedName
+          tooltip
+          imageFilePath
+        }
+      }
+    `,
+    () => ({
+      limit: numBoxes(),
+      search: appState.search,
+      mode: "contains",
+    }),
+    { getNSidebarItems: [] } // Initial value
+  );
+
+  createEffect(() => {
+    console.log(data());
+  })
 
   return (
     <>
@@ -33,28 +66,38 @@ function Items(props: {ownWidth: number}) {
           "grid-template-columns": gridTemplateString(),
         }}
       >
-        <Index
-          each={Array.from({ length: gridSideLength() ** 2 })}
-          fallback={"Input a grid side length."}
-        >
-          {(obj, index) => (
-            <div
-              class="cell"
-              onMouseEnter={(event) => {
-                const eventEl = event.currentTarget;
+        <Show when={!data.loading}>
+          <Index
+            each={Array.from({ length: numBoxes() })}
+          >
+            {(_, index) => {
+              const image_path = data()?.getNSidebarItems?.[index]?.['imageFilePath'];
+              const full_image_path = () => `${baseImagePath}/${image_path}`;
+              return (
+                <div
+                  class="cell"
+                  onMouseEnter={(event) => {
+                    // const eventEl = event.currentTarget;
 
-                eventEl.style.backgroundColor = randomHexColorString();
+                    // eventEl.style.backgroundColor = randomHexColorString();
 
-                setTimeout(() => {
-                  eventEl.style.backgroundColor = "initial";
-                }, 500);
-              }}
-              onClick ={(event) => {
-                console.log(`Clicked on ${event.currentTarget} ${index}`)
-              }}
-            ></div>
-          )}
-        </Index>
+                    // setTimeout(() => {
+                    //   eventEl.style.backgroundColor = "initial";
+                    // }, 500);
+                  }}
+                  onClick ={(event) => {
+                    console.log(`Clicked on ${event.currentTarget} ${index}`)
+                  }}
+                >
+                  <Image
+                    src={full_image_path()}
+                    fallback={<div/>}
+                  />
+                </div>
+              );
+            }}
+          </Index>
+        </Show>
       </div>
     </>
   );

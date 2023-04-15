@@ -3,7 +3,7 @@ import { appState, setAppState } from '~/state/appState'
 import { onMount } from 'solid-js'
 import { produce } from 'solid-js/store'
 import { HopeProvider } from '@hope-ui/solid'
-import { Box, Grid, GridItem } from '@hope-ui/solid'
+import { Box, Grid, GridItem, Text } from '@hope-ui/solid'
 
 const gap = 6;
 const topHeight = 50;
@@ -31,7 +31,11 @@ export default function Home() {
             <GridItem h={topHeight} bg="tomato"/>
             <GridItem h={lowerHeight()}>
               <Grid templateColumns="repeat(2, 1fr)" gap={gap} height="100%">
-                <GridItem bg="purple"/>
+                <GridItem bg="purple">
+                  <Text>
+                    {appState.width} x {appState.height}
+                  </Text>
+                </GridItem>
                 <GridItem bg="green">
                   <Sidebar ownWidth={rightWidth()} ownHeight={lowerHeight()}/>
                 </GridItem>
