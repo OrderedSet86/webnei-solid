@@ -1,30 +1,16 @@
-# SolidStart
+# WebNEI
 
-Everything you need to build a Solid project, powered by [`solid-start`](https://start.solidjs.com);
+### Setup \[Linux\]
 
-## Creating a project
+1. Download and run newest nesql-exporter: https://github.com/D-Cysteine/nesql-exporter
+   It will take a LONG time, maybe 60+ minutes?
+2. Convert HSQLDB to PostgreSQL by doing ????
+   Until I figure this out, you can download the 2.2.8 DB from here: https://github.com/harrynull/NEIGraphQL/releases/tag/gtnh_dump
+3. Set up WebNEI backend: https://github.com/OrderedSet86/webnei-backend
+4. Run database migration script in backend `python -m src.scripts.prepare_postgres_db`. This sets up indices for faster search
+5. Check backend is working with `python main.py` and navigating to http://localhost:5000/graphql
+6. Clone this (frontend) repo
+7. npm i
+8. npm run dev -- --open
+9. Note that for now, a ton of file watchers are created - you may need to increase the number of file watchers using `sudo sysctl fs.inotify.max_user_watches=524288`
 
-```bash
-# create a new project in the current directory
-npm init solid@latest
-
-# create a new project in my-app
-npm init solid@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-Solid apps are built with _adapters_, which optimise your project for deployment to different environments.
-
-By default, `npm run build` will generate a Node app that you can run with `npm start`. To use a different adapter, add it to the `devDependencies` in `package.json` and specify in your `vite.config.js`.

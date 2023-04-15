@@ -14,11 +14,8 @@ import "./Items.css"
 // Modified from https://www.solidjs.com/examples/ethasketch
 
 const boxWidth = 40;
-const baseImagePath = "nei_images";
-
-function randomHexColorString(): string {
-    return "#" + Math.floor(Math.random() * 16777215).toString(16);
-}
+const imageWidth = 40 - 2;
+const baseImagePath = "./nei_images";
 
 function Items(props: {ownWidth: number}) {
   // Layout
@@ -76,18 +73,14 @@ function Items(props: {ownWidth: number}) {
               const tooltipLabel = `${data()?.getNSidebarItems?.[index]?.['tooltip']}`
 
               return (
-                <Tooltip label={tooltipLabel} placement="right" withArrow>
+                <Tooltip label={tooltipLabel} placement="right" withArrow closeOnClick={false}>
                   <div
                     class="cell"
                     onClick ={(event) => {
                       console.log(`Clicked on ${event.currentTarget} ${index}`)
                     }}
                   >
-                      <Image
-                        src={full_image_path()}
-                        fallback={<div/>}
-                        // loading="lazy"
-                      />
+                    <img src={full_image_path()} width={imageWidth} height={imageWidth} loading="lazy" />
                   </div>
                 </Tooltip>
               );
