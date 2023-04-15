@@ -7,7 +7,7 @@ import {
 } from "solid-js";
 import { appState, setAppState } from '~/state/appState'
 import { gql, createGraphQLClient } from "@solid-primitives/graphql"
-import { Image } from "@hope-ui/solid";
+import { Image, Tooltip } from "@hope-ui/solid";
 
 import "./Items.css"
 
@@ -73,27 +73,23 @@ function Items(props: {ownWidth: number}) {
             {(_, index) => {
               const image_path = data()?.getNSidebarItems?.[index]?.['imageFilePath'];
               const full_image_path = () => `${baseImagePath}/${image_path}`;
+              const tooltipLabel = `${data()?.getNSidebarItems?.[index]?.['tooltip']}`
+
               return (
-                <div
-                  class="cell"
-                  onMouseEnter={(event) => {
-                    // const eventEl = event.currentTarget;
-
-                    // eventEl.style.backgroundColor = randomHexColorString();
-
-                    // setTimeout(() => {
-                    //   eventEl.style.backgroundColor = "initial";
-                    // }, 500);
-                  }}
-                  onClick ={(event) => {
-                    console.log(`Clicked on ${event.currentTarget} ${index}`)
-                  }}
-                >
-                  <Image
-                    src={full_image_path()}
-                    fallback={<div/>}
-                  />
-                </div>
+                <Tooltip label={tooltipLabel} placement="right" withArrow>
+                  <div
+                    class="cell"
+                    onClick ={(event) => {
+                      console.log(`Clicked on ${event.currentTarget} ${index}`)
+                    }}
+                  >
+                      <Image
+                        src={full_image_path()}
+                        fallback={<div/>}
+                        // loading="lazy"
+                      />
+                  </div>
+                </Tooltip>
               );
             }}
           </Index>
