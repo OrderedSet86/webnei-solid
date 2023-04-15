@@ -1,74 +1,41 @@
-import {
-    createMemo,
-    createSignal,
-    Index,
-} from "solid-js";
-
-import "./Sidebar.css"
+import Items from "~/components/Items";
+import type { JSX } from 'solid-js';
+import { Box, Center, Grid, GridItem, Input } from '@hope-ui/solid'
+import { debounce } from "@solid-primitives/scheduled";
 
 
-// Modified from https://www.solidjs.com/examples/ethasketch
-
-const maxGridPixelWidth = 500;
-
-function randomHexColorString(): string {
-    return "#" + Math.floor(Math.random() * 16777215).toString(16);
+interface SidebarProps {
+    ownHeight: number;
+    ownWidth: number;
 }
 
-function clampGridSideLength(newSideLength: number): number {
-    return Math.min(Math.max(newSideLength, 0), 100);
-}
+const searchBoxHeight = 50;
 
+const Sidebar = (props: SidebarProps): JSX.Element => {
+    const updateSearch = debounce((search: string) => {
+        console.log(search);
+    }, 250)
 
-function Sidebar() {
-  const [gridSideLength, setGridSideLength] = createSignal(10);
-  const gridTemplateString = createMemo(() =>
-    `repeat(${gridSideLength()}, ${maxGridPixelWidth / gridSideLength()}px)`
-  );
+    const handleInput = (event: Event) => {
+        if (event.target) {
+            updateSearch((event.target as HTMLInputElement).value);
+        }
+    }
 
-  return (
-    <>
-      {/* <div>
-        <label>Grid Side Length: </label>
-        <input
-          type="number"
-          value={gridSideLength()}
-          onInput={(e) =>
-            setGridSideLength(
-              clampGridSideLength(e.currentTarget.valueAsNumber)
-            )
-          }
-        />
-      </div> */}
-      <div
-        style={{
-          display: "grid",
-          "grid-template-rows": gridTemplateString(),
-          "grid-template-columns": gridTemplateString(),
-        }}
-      >
-        <Index
-          each={Array.from({ length: gridSideLength() ** 2 })}
-          fallback={"Input a grid side length."}
-        >
-          {() => (
-            <div
-              class="cell"
-              onMouseEnter={(event) => {
-                const eventEl = event.currentTarget;
-
-                eventEl.style.backgroundColor = randomHexColorString();
-
-                setTimeout(() => {
-                  eventEl.style.backgroundColor = "initial";
-                }, 500);
-              }}
-            ></div>
-          )}
-        </Index>
-      </div>
-    </>
-  );
+    return (
+        <>
+            <Grid templateRows="repeat(2, 1fr)" gap={0} height={props.ownHeight}>
+                <GridItem bg="orange">
+                    <Center>
+                        <Items ownWidth={props.ownHeight - searchBoxHeight}/>
+                    </Center>
+                </GridItem>
+                <GridItem bg="blue">
+                    <Input placeholder="Search" height="100%" color="white" onInput={handleInput}/>
+                </GridItem>
+            </Grid>
+        </>
+    );
 }
 
 export default Sidebar;

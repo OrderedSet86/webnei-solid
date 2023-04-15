@@ -1,5 +1,5 @@
-import Sidebar from "~/components/Sidebar"
-import { createSignal, onMount } from 'solid-js';
+import Sidebar from '~/components/Sidebar'
+import { createSignal, onMount } from 'solid-js'
 import { HopeProvider } from '@hope-ui/solid'
 import { Box, Grid, GridItem } from '@hope-ui/solid'
 
@@ -11,6 +11,8 @@ export default function Home() {
     height: window.innerHeight,
     width: window.innerWidth
   });
+  const lowerHeight = () => rect().height - topHeight - gap;
+  const rightWidth = () => rect().width / 2 - gap;
 
   const handler = (event: Event) => {
     setRect({ height: window.innerHeight, width: window.innerWidth });
@@ -26,11 +28,11 @@ export default function Home() {
         <Box height="100vh" bg="black" padding={0} margin={0}>
           <Grid templateRows="repeat(2, 1fr)" gap={gap} height="100vh">
             <GridItem h={topHeight} bg="tomato"/>
-            <GridItem h={rect().height - topHeight - gap}>
+            <GridItem h={lowerHeight()}>
               <Grid templateColumns="repeat(2, 1fr)" gap={gap} height="100%">
                 <GridItem bg="purple"/>
                 <GridItem bg="green">
-                  <Sidebar />
+                  <Sidebar ownWidth={rightWidth()} ownHeight={lowerHeight()}/>
                 </GridItem>
               </Grid>
             </GridItem>
