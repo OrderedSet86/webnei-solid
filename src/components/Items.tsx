@@ -1,21 +1,21 @@
 import {
     createEffect,
     createMemo,
-    createSignal,
     Index,
     Show,
 } from "solid-js";
 import { appState, setAppState } from '~/state/appState'
 import { gql, createGraphQLClient } from "@solid-primitives/graphql"
 import { Image, Tooltip } from "@hope-ui/solid";
+import { produce } from 'solid-js/store'
 
 import "./Items.css"
 
 // Modified from https://www.solidjs.com/examples/ethasketch
 
 const boxWidth = 40;
-const imageWidth = 40 - 2;
 const baseImagePath = "./nei_images";
+const fallbackImage = "/missing.png";
 
 function Items(props: {ownWidth: number}) {
   // Layout
@@ -54,6 +54,14 @@ function Items(props: {ownWidth: number}) {
     console.log(data());
   })
 
+  const handleSidebarItemClick = (index: number) => {
+    if (!data.loading) {
+      setAppState(produce((s) => {
+        s.currentSidebarItem = data().getNSidebarItems[index]
+      }))
+    }
+  }
+
   return (
     <>
       <div
@@ -77,10 +85,20 @@ function Items(props: {ownWidth: number}) {
                   <div
                     class="cell"
                     onClick ={(event) => {
-                      console.log(`Clicked on ${event.currentTarget} ${index}`)
+                      handleSidebarItemClick(index);
                     }}
                   >
-                    <img src={full_image_path()} width={imageWidth} height={imageWidth} loading="lazy" />
+                    <Image
+                      src={full_image_path()}
+                      width={appState.imageWidth}
+                      height={appState.imageWidth}
+                      loading="lazy"
+                      fallback={fallbackImage}
+                    />
+                    {/* <picture>
+                      <source srcset={full_image_path()}/>
+                      <img src={fallbackImage} loading="lazy"/>
+                    </picture> */}
                   </div>
                 </Tooltip>
               );

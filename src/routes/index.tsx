@@ -1,5 +1,7 @@
 import Sidebar from '~/components/Sidebar'
+import NEIBrowser from '~/components/NEIBrowser'
 import { appState, setAppState } from '~/state/appState'
+
 import { onMount } from 'solid-js'
 import { produce } from 'solid-js/store'
 import { HopeProvider } from '@hope-ui/solid'
@@ -32,9 +34,7 @@ export default function Home() {
             <GridItem h={lowerHeight()}>
               <Grid templateColumns="repeat(2, 1fr)" gap={gap} height="100%">
                 <GridItem bg="purple">
-                  <Text>
-                    {appState.width} x {appState.height}
-                  </Text>
+                  <NEIBrowser/>
                 </GridItem>
                 <GridItem bg="green">
                   <Sidebar ownWidth={rightWidth()} ownHeight={lowerHeight()}/>
