@@ -16,6 +16,14 @@ const baseImagePath = "./nei_images";
 const fallbackImage = "/missing.png";
 
 function ClickableItem(props: ClickableItemProps) {
+  // Currently supports:
+  // Left click: look up sources of item
+
+  // Later want this to support:
+  // Right click: look up uses of item
+  // R: look up sources of item
+  // U: look up uses of item
+
   const handleItemClick = (event: MouseEvent) => {
     setAppState(produce((s) => {
       s.currentSidebarItem = props.display_info;
