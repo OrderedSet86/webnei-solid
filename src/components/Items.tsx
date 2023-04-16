@@ -1,3 +1,4 @@
+import ClickableItem from './ClickableItem'
 import {
     createEffect,
     createMemo,
@@ -54,14 +55,6 @@ function Items(props: {ownWidth: number}) {
     console.log(data());
   })
 
-  const handleSidebarItemClick = (index: number) => {
-    if (!data.loading) {
-      setAppState(produce((s) => {
-        s.currentSidebarItem = data().getNSidebarItems[index]
-      }))
-    }
-  }
-
   return (
     <>
       <div
@@ -76,31 +69,13 @@ function Items(props: {ownWidth: number}) {
             each={Array.from({ length: numBoxes() })}
           >
             {(_, index) => {
-              const image_path = data()?.getNSidebarItems?.[index]?.['imageFilePath'];
-              const full_image_path = () => `${baseImagePath}/${image_path}`;
               const tooltipLabel = `${data()?.getNSidebarItems?.[index]?.['tooltip']}`
 
               return (
-                <Tooltip label={tooltipLabel} placement="right" withArrow closeOnClick={false}>
-                  <div
-                    class="cell"
-                    onClick ={(event) => {
-                      handleSidebarItemClick(index);
-                    }}
-                  >
-                    <Image
-                      src={full_image_path()}
-                      width={appState.imageWidth}
-                      height={appState.imageWidth}
-                      loading="lazy"
-                      fallback={fallbackImage}
-                    />
-                    {/* <picture>
-                      <source srcset={full_image_path()}/>
-                      <img src={fallbackImage} loading="lazy"/>
-                    </picture> */}
-                  </div>
-                </Tooltip>
+                <ClickableItem 
+                  tooltipLabel={tooltipLabel}
+                  display_info={data()?.getNSidebarItems?.[index]}
+                />
               );
             }}
           </Index>
