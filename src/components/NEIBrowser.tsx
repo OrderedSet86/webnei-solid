@@ -64,18 +64,13 @@ function NEIBrowser() {
       gaseous
       id
       imageFilePath
-      input
-      internalName
       localizedName
       liters
-      luminosity
       modId
       nbt
       outputProbability
       position
       temperature
-      unlocalizedName
-      viscosity
     }
     
     fragment NEIItemFragment on NEIItem {
@@ -83,18 +78,12 @@ function NEIBrowser() {
       localizedName
       stackSize
       imageFilePath
-      input
-      internalName
-      itemDamage
       itemId
-      maxDamage
-      maxStackSize
       modId
       nbt
       outputProbability
       position
       tooltip
-      unlocalizedName
     }
     
     fragment NEIBaseRecipeFragment on NEIBaseRecipe {
