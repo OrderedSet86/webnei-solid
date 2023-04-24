@@ -12,10 +12,15 @@ import { Image, Tooltip, Text } from "@hope-ui/solid";
 import { produce } from 'solid-js/store'
 
 
+interface QueryResponse {
+  getRecipesThatMakeSingleId: {}
+}
+
+
 function NEIBrowser() {
   const graphQLClient = createGraphQLClient("http://localhost:5000/graphql");
 
-  const [data, {refetch}] = graphQLClient<{ getRecipesThatMakeSingleId: {}}>(
+  const [data, {refetch}] = graphQLClient<QueryResponse>(
     gql`
     query MakeItems($single_id: String!) {
       getRecipesThatMakeSingleId(itemId: $single_id) {
@@ -118,7 +123,7 @@ function NEIBrowser() {
 
   return (
     <>
-      <Suspense>
+      <Show when={!data.loading}>
         <Index
           each={data()?.getRecipesThatMakeSingleId?.OtherRecipes}
         >
@@ -132,7 +137,7 @@ function NEIBrowser() {
             );
           }}
         </Index>
-      </Suspense>
+      </Show>
     </>
   )
 }

@@ -1,5 +1,5 @@
 import Sidebar from '~/components/Sidebar'
-// import NEIBrowser from '~/components/NEIBrowser'
+import NEIBrowser from '~/components/NEIBrowser'
 import { appState, setAppState } from '~/state/appState'
 
 import { onMount } from 'solid-js'
@@ -35,7 +35,7 @@ export default function Home() {
             <GridItem h={lowerHeight()}>
               <Grid templateColumns="repeat(2, 1fr)" gap={gap} height="100%">
                 <GridItem bg="purple">
-                  {/* <NEIBrowser/> */}
+                  <NEIBrowser/>
                 </GridItem>
                 <GridItem bg="green">
                   <Sidebar ownWidth={rightWidth()} ownHeight={lowerHeight()}/>
