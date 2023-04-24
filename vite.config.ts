@@ -6,4 +6,9 @@ export default defineConfig({
   build: {
     minify: 'esbuild'
   },
+  server: {
+    watch: {
+      ignored: ['**/nei_images/**']
+    }
+  }
 });

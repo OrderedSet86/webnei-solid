@@ -1,6 +1,7 @@
 import {
     createEffect,
     createMemo,
+    createSignal,
     ErrorBoundary,
     Index,
     Show,
@@ -13,6 +14,7 @@ import { produce } from 'solid-js/store'
 
 function NEIBrowser() {
   const graphQLClient = createGraphQLClient("http://localhost:5000/graphql");
+
   const [data, {refetch}] = graphQLClient<{ getRecipesThatMakeSingleId: {}}>(
     gql`
     query MakeItems($single_id: String!) {
@@ -116,23 +118,21 @@ function NEIBrowser() {
 
   return (
     <>
-      <ErrorBoundary fallback={err => err}>
-        <Show when={!data.loading}>
-          <Index
-            each={data()?.getRecipesThatMakeSingleId.OtherRecipes}
-          >
-            {(recipe, index) => {
-              return (
-                <Text>
-                  {JSON.stringify(recipe().inputItems)}
-                  <br/>
-                  {JSON.stringify(recipe().outputItems)}
-                </Text>
-              );
-            }}
-          </Index>
-        </Show>
-      </ErrorBoundary>
+      <Suspense>
+        <Index
+          each={data()?.getRecipesThatMakeSingleId?.OtherRecipes}
+        >
+          {(recipe, index) => {
+            return (
+              <Text>
+                {JSON.stringify(recipe().inputItems)}
+                <br/>
+                {JSON.stringify(recipe().outputItems)}
+              </Text>
+            );
+          }}
+        </Index>
+      </Suspense>
     </>
   )
 }

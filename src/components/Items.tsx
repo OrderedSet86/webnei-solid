@@ -1,13 +1,12 @@
 import ClickableItem from './ClickableItem'
 import {
-    createEffect,
-    createMemo,
-    Index,
-    Show,
+  createEffect,
+  createMemo,
+  Index,
+  Show,
 } from "solid-js";
 import { appState, setAppState } from '~/state/appState'
 import { gql, createGraphQLClient } from "@solid-primitives/graphql"
-import { Image, Tooltip } from "@hope-ui/solid";
 import { produce } from 'solid-js/store'
 
 import "./Items.css"
@@ -15,8 +14,6 @@ import "./Items.css"
 // Modified from https://www.solidjs.com/examples/ethasketch
 
 const boxWidth = 40;
-const baseImagePath = "./nei_images";
-const fallbackImage = "/missing.png";
 
 function Items(props: {ownWidth: number}) {
   // Layout
@@ -28,7 +25,7 @@ function Items(props: {ownWidth: number}) {
 
   // GraphQL
   const graphQLClient = createGraphQLClient("http://localhost:5000/graphql");
-  const [data, {refetch}] = graphQLClient<{ getNSidebarItems: []}>(
+  const [data, {refetch}] = graphQLClient<{ getNSidebarItems: Array<any>}>(
     gql`
       query SidebarItems(
         $limit: Int!,
@@ -51,10 +48,6 @@ function Items(props: {ownWidth: number}) {
     { getNSidebarItems: [] } // Initial value
   );
 
-  createEffect(() => {
-    console.log(data());
-  })
-
   return (
     <>
       <div
@@ -66,7 +59,7 @@ function Items(props: {ownWidth: number}) {
       >
         <Show when={!data.loading}>
           <Index
-            each={Array.from({ length: numBoxes() })}
+            each={Array.from({ length: numBoxes()})}
           >
             {(_, index) => {
               const tooltipLabel = `${data()?.getNSidebarItems?.[index]?.['tooltip']}`
