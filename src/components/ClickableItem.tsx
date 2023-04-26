@@ -3,6 +3,9 @@ import { appState, setAppState } from '~/state/appState'
 import { Image, Tooltip } from "@hope-ui/solid";
 import { produce } from 'solid-js/store'
 
+import './ClickableItem.css'
+import { A } from "@solidjs/router";
+
 interface ClickableItemProps {
   tooltipLabel: string;
   display_info: {
@@ -33,10 +36,17 @@ function ClickableItem(props: ClickableItemProps) {
     }
   }
 
+  console.log(props.tooltipLabel)
+
   return (
       <div class="cell" onClick ={(event) => {handleItemClick(event);}}>
         <Show when={props.display_info} fallback={<></>}>
-          <Tooltip label={props.tooltipLabel} placement="right" withArrow closeOnClick={false}>
+          <Tooltip
+            className="tooltip"
+            label={props.tooltipLabel.replaceAll("\\u000a", "\u000a")}
+            placement="right" 
+            closeOnClick={false}
+          >
             <img
               src={`${baseImagePath}/${props.display_info.imageFilePath}`}
               width={appState.imageWidth}
