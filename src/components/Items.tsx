@@ -15,13 +15,12 @@ import "./Items.css"
 
 const boxWidth = 40;
 
-function Items(props: {ownWidth: number}) {
+function Items(props: {ownWidth: number, ownHeight: number}) {
   // Layout
-  const gridSideLength = () => Math.floor(props.ownWidth / boxWidth);
-  const gridTemplateString = createMemo(() =>
-    `repeat(${gridSideLength()}, ${boxWidth}px)`
-  );
-  const numBoxes = createMemo(() => gridSideLength() ** 2);
+  const gridSideWidth = () => Math.floor(props.ownWidth / boxWidth)
+  const gridSideHeight = () => Math.floor(props.ownHeight / boxWidth)
+
+  const numBoxes = createMemo(() => gridSideWidth() * gridSideHeight());
 
   // GraphQL
   const graphQLClient = createGraphQLClient("http://localhost:5000/graphql");
@@ -53,8 +52,8 @@ function Items(props: {ownWidth: number}) {
       <div
         style={{
           display: "grid",
-          "grid-template-rows": gridTemplateString(),
-          "grid-template-columns": gridTemplateString(),
+          "grid-template-rows": `repeat(${gridSideHeight()}, ${boxWidth}px)`,
+          "grid-template-columns": `repeat(${gridSideWidth()}, ${boxWidth}px)`,
         }}
       >
         <Show when={!data.loading}>

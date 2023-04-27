@@ -18,7 +18,7 @@ const Sidebar = (props: SidebarProps): JSX.Element => {
             <Grid templateRows="repeat(2, 1fr)" gap={0} height={props.ownHeight}>
                 <GridItem bg="orange">
                     <Center>
-                        <Items ownWidth={props.ownHeight - searchBoxHeight}/>
+                        <Items ownHeight={props.ownHeight - searchBoxHeight} ownWidth={props.ownWidth}/>
                     </Center>
                 </GridItem>
                 <GridItem bg="blue">
