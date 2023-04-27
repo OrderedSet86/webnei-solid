@@ -13,7 +13,15 @@ import { produce } from 'solid-js/store'
 
 
 interface QueryResponse {
-  getRecipesThatMakeSingleId: {}
+  getRecipesThatMakeSingleId: {
+    singleId?: string
+    makeOrUse?: string
+    GTRecipes?: Array<{}>
+    OtherRecipes?: Array<{
+      inputItems?: Array<{}>
+      outputItems?: Array<{}>
+    }>
+  }
 }
 
 
@@ -110,7 +118,7 @@ function NEIBrowser() {
     }
     `,
     () => ({
-      single_id: "i~gregtech~gt.metaitem.01~23019" // (appState.currentSidebarItem ? appState.currentSidebarItem.itemId : ""),
+      single_id: appState.currentSidebarItem.itemId || "",
     }),
     { getRecipesThatMakeSingleId: {} } // Initial value
   );

@@ -46,6 +46,7 @@ function ClickableItem(props: ClickableItemProps) {
             label={props.tooltipLabel.replaceAll("\\u000a", "\u000a")}
             placement="right" 
             closeOnClick={false}
+            overflow="hidden"
           >
             <img
               src={`${baseImagePath}/${props.display_info.imageFilePath}`}
