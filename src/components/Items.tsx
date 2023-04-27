@@ -57,9 +57,7 @@ function Items(props: {ownWidth: number, ownHeight: number}) {
         }}
       >
         <Show when={!data.loading}>
-          <Index
-            each={Array.from({ length: numBoxes()})}
-          >
+          <Index each={Array.from({ length: numBoxes()})}>
             {(_, index) => {
               const tooltipLabel = `${data()?.getNSidebarItems?.[index]?.['tooltip']}`
 

@@ -1,5 +1,6 @@
 import Sidebar from '~/components/Sidebar'
 import NEIBrowser from '~/components/NEIBrowser'
+import FallbackRecipeRenderer from '~/components/FallbackRecipeRenderer'
 import { appState, setAppState } from '~/state/appState'
 
 import { onMount } from 'solid-js'
@@ -26,6 +27,42 @@ export default function Home() {
     window.addEventListener('resize', handler);
   });
 
+  const recipe = {
+    "inputItems": [
+      {
+        "id": "i~gregtech~gt.metaitem.01~23019",
+        "localizedName": "Aluminium Rod",
+        "stackSize": 1,
+        "imageFilePath": "item/gregtech/gt.metaitem.01~23019.png",
+        "position": 0
+      }
+    ],
+    "inputFluids": [
+      {
+        "id": "f~gregtech~plasma.argon",
+        "imageFilePath": "fluid/gregtech/plasma.argon.png",
+        "position": 0,
+        "liters": 1
+      }
+    ],
+    "outputItems": [
+      {
+        "localizedName": "Aluminium Nugget",
+        "stackSize": 4,
+        "imageFilePath": "item/gregtech/gt.metaitem.01~9019.png",
+        "position": 0
+      }
+    ],
+    "outputFluids": [
+      {
+        "id": "f~GalacticraftMars~argon",
+        "imageFilePath": "fluid/GalacticraftMars/argon.png",
+        "liters": 1,
+        "position": 0
+      }
+    ]
+  }
+
   return (
     <main>
       <HopeProvider>
@@ -35,7 +72,8 @@ export default function Home() {
             <GridItem h={lowerHeight()}>
               <Grid templateColumns="repeat(2, 1fr)" gap={gap} height="100%">
                 <GridItem bg="purple" overflow="hidden">
-                  <NEIBrowser/>
+                  {/* <NEIBrowser/> */}
+                  <FallbackRecipeRenderer recipe={recipe}/>
                 </GridItem>
                 <GridItem bg="green">
                   <Sidebar ownWidth={rightWidth()} ownHeight={lowerHeight()}/>

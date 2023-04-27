@@ -36,8 +36,6 @@ function ClickableItem(props: ClickableItemProps) {
     }
   }
 
-  console.log(props.tooltipLabel)
-
   return (
       <div class="cell" onClick ={(event) => {handleItemClick(event);}}>
         <Show when={props.display_info} fallback={<></>}>
