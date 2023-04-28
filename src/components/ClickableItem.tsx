@@ -1,10 +1,9 @@
 import { Show } from "solid-js";
 import { appState, setAppState } from '~/state/appState'
-import { Image, Tooltip } from "@hope-ui/solid";
+import { Center, Image, Tooltip } from "@hope-ui/solid";
 import { produce } from 'solid-js/store'
 
 import './ClickableItem.css'
-import { A } from "@solidjs/router";
 
 interface ClickableItemProps {
   tooltipLabel: string;
@@ -14,6 +13,7 @@ interface ClickableItemProps {
     tooltip: string;
     imageFilePath: string;
   };
+  divClass?: string;
 }
 
 const baseImagePath = "./nei_images";
@@ -36,24 +36,29 @@ function ClickableItem(props: ClickableItemProps) {
     }
   }
 
+  const divClassName = props.divClass ? props.divClass : "cellNoOutline";
+
   return (
-      <div class="cell" onClick ={(event) => {handleItemClick(event);}}>
-        <Show when={props.display_info} fallback={<></>}>
-          <Tooltip
-            className="tooltip"
-            label={props.tooltipLabel.replaceAll("\\u000a", "\u000a")}
-            placement="right" 
-            closeOnClick={false}
-            overflow="hidden"
-          >
-            <img
-              src={`${baseImagePath}/${props.display_info.imageFilePath}`}
-              width={appState.imageWidth}
-              height={appState.imageWidth}
-              loading="lazy"
-            />
-          </Tooltip>
-        </Show>
+      <div class={divClassName} onClick ={(event) => {handleItemClick(event)}}>
+        <Center h={appState.imageWidth + 2} w={appState.imageWidth + 2}>
+          <Show when={props.display_info} fallback={<></>}>
+            <Tooltip
+              className="tooltip"
+              label={props.tooltipLabel.replaceAll("\\u000a", "\u000a")}
+              placement="right" 
+              closeOnClick={false}
+              overflow="hidden"
+            >
+                <img
+                  src={`${baseImagePath}/${props.display_info.imageFilePath}`}
+                  width={appState.imageWidth}
+                  height={appState.imageWidth}
+                  loading="lazy"
+                  decoding="async"
+                />
+            </Tooltip>
+          </Show>
+        </Center>
       </div>
   );
 }

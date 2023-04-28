@@ -65,6 +65,7 @@ function Items(props: {ownWidth: number, ownHeight: number}) {
                 <ClickableItem 
                   tooltipLabel={tooltipLabel}
                   display_info={data()?.getNSidebarItems?.[index]}
+                  divClass={"cell"}
                 />
               );
             }}
