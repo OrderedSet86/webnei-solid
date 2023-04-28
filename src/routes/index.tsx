@@ -5,8 +5,11 @@ import { appState, setAppState } from '~/state/appState'
 
 import { onMount } from 'solid-js'
 import { produce } from 'solid-js/store'
-import { HopeProvider } from '@hope-ui/solid'
+import { HopeProvider, HopeThemeConfig } from '@hope-ui/solid'
 import { Box, Grid, GridItem, Text } from '@hope-ui/solid'
+
+// import './index.css'
+
 
 Error.stackTraceLimit = Infinity;
 const gap = 6;
@@ -63,9 +66,19 @@ export default function Home() {
     ]
   }
 
+  const config: HopeThemeConfig = {
+    components: {
+      Tooltip: {
+        baseStyle: {
+          "font-family": ["Ark-Pixel", "Inter", "system-ui", "Avenir", "Helvetica", "Arial", "sans-serif"]
+        }
+      }
+    }
+  }
+
   return (
     <main>
-      <HopeProvider>
+      <HopeProvider config={config}>
         <Box height="100vh" bg="black" padding={0} margin={0}>
           <Grid templateRows="repeat(2, 1fr)" gap={gap} height="100%">
             <GridItem h={topHeight} bg="tomato"/>
@@ -74,6 +87,7 @@ export default function Home() {
                 <GridItem bg="purple" overflow="hidden">
                   {/* <NEIBrowser/> */}
                   <FallbackRecipeRenderer recipe={recipe}/>
+                  <h2>{"hello world"}</h2>
                 </GridItem>
                 <GridItem bg="green">
                   <Sidebar ownWidth={rightWidth()} ownHeight={lowerHeight()}/>

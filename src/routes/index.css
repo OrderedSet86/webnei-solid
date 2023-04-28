@@ -1,0 +1,16 @@
+@font-face {
+  font-family: "Ark-Pixel";
+  src: url("assets/ark-pixel-12px-proportional-latin.woff2") format('woff2');
+}
+
+body {
+  font-family: Ark-Pixel, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif !important;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
