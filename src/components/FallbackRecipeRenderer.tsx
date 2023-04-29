@@ -14,16 +14,13 @@ interface FallbackRecipeRendererProps {
     }
 }
 
+const scaleFactor = 1.25
 const gap = 2
-const recipeWidth = appState.imageWidth * 4 + gap * 3
+const recipeWidth = (appState.imageWidth + 2) * scaleFactor * 4 + gap * 3
 const sizeStr = `${recipeWidth}px`
 
 const FallbackRecipeRenderer = (props: FallbackRecipeRendererProps) => {
     // Renders a recipe as a 4x4 grid -> 4x4 grid (no darkUI asset)
-
-    const gap = 2
-    const recipeWidth = appState.imageWidth * 4 + gap * 3
-    const sizeStr = `${recipeWidth}px`
 
     return (
         <>
@@ -48,15 +45,32 @@ const ItemAndFluidGrid = (props: ItemAndFluidGridProps) => {
         <Grid templateColumns="repeat(4, 1fr)" templateRows="repeat(4, 1fr)" gap={gap} height={sizeStr} width={sizeStr}>
             <Index each={Array.from({ length: 16 })}>
                 {(_, index) => {
-                    const item = props.items[index];
-                    if (item) {
+                    if (index < props.items.length) {
+                        const item = props.items[index];
                         return (
                             <GridItem bg="blue">
                                 <Center>
                                     <ClickableItem
                                         tooltipLabel={item.localizedName}
-                                        display_info={item}
+                                        basic_display_info={item}
                                         divClass={"cellNoOutline"}
+                                        scaleFactor={scaleFactor}
+                                        advanced_display_info={{quantity: item.stackSize, clickableType: "item"}}
+                                    />
+                                </Center>
+                            </GridItem>
+                        );
+                    } else if (index < props.items.length + props.fluids.length) {
+                        const fluid = props.fluids[index - props.items.length];
+                        return (
+                            <GridItem bg="blue">
+                                <Center>
+                                    <ClickableItem
+                                        tooltipLabel={fluid.id}
+                                        basic_display_info={fluid}
+                                        divClass={"cellNoOutline"}
+                                        scaleFactor={scaleFactor}
+                                        advanced_display_info={{quantity: fluid.liters, clickableType: "fluid"}}
                                     />
                                 </Center>
                             </GridItem>

@@ -61,11 +61,22 @@ function Items(props: {ownWidth: number, ownHeight: number}) {
             {(_, index) => {
               const tooltipLabel = `${data()?.getNSidebarItems?.[index]?.['tooltip']}`
 
+              const proto_display_info = () => data()?.getNSidebarItems?.[index]
+              let basic_display_info = proto_display_info();
+              if (basic_display_info !== undefined) {
+                basic_display_info = {
+                  ...proto_display_info(),
+                  id: proto_display_info().itemId
+                }
+                delete basic_display_info.itemId
+              }
+
               return (
                 <ClickableItem 
                   tooltipLabel={tooltipLabel}
-                  display_info={data()?.getNSidebarItems?.[index]}
+                  basic_display_info={basic_display_info}
                   divClass={"cell"}
+                  scaleFactor={1}
                 />
               );
             }}

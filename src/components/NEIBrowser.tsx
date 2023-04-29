@@ -136,6 +136,8 @@ function NEIBrowser() {
           each={data()?.getRecipesThatMakeSingleId?.OtherRecipes}
         >
           {(recipe, index) => {
+            console.log(recipe());
+            console.log(index)
             return (
               <Text>
                 {JSON.stringify(recipe().inputItems)}

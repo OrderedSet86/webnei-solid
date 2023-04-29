@@ -1,19 +1,25 @@
 import { Show } from "solid-js";
 import { appState, setAppState } from '~/state/appState'
-import { Center, Image, Tooltip } from "@hope-ui/solid";
+import { Box, Center, Image, Tooltip } from "@hope-ui/solid";
 import { produce } from 'solid-js/store'
 
 import './ClickableItem.css'
 
+
 interface ClickableItemProps {
   tooltipLabel: string;
-  display_info: {
-    itemId: string;
+  basic_display_info: {
+    id: string;
     localizedName: string;
     tooltip: string;
     imageFilePath: string;
   };
+  scaleFactor: number;
   divClass?: string;
+  advanced_display_info?: {
+    quantity: number;
+    clickableType: string;
+  }
 }
 
 const baseImagePath = "./nei_images";
@@ -29,19 +35,30 @@ function ClickableItem(props: ClickableItemProps) {
   // U: look up uses of item
 
   const handleItemClick = (event: MouseEvent) => {
-    if (props.display_info) {
+    if (props.basic_display_info) {
       setAppState(produce((s) => {
-        s.currentSidebarItem = props.display_info;
+        s.currentSidebarItem = props.basic_display_info;
       }));
     }
   }
 
+  const fullClickableWidth = (appState.imageWidth + 2) * props.scaleFactor;
+  const imageWidth = appState.imageWidth * props.scaleFactor;
+  let quantityLabel = props.advanced_display_info ? props.advanced_display_info.quantity.toString() : "";
+  if (props.advanced_display_info && props.advanced_display_info.clickableType == "fluid") {
+    quantityLabel = quantityLabel + "L";
+  }
+
   const divClassName = props.divClass ? props.divClass : "cellNoOutline";
+  const quantityDisplayWidth = Math.min(
+    fullClickableWidth,
+    props.advanced_display_info ? quantityLabel.length * 10 : 0,
+  );
 
   return (
       <div class={divClassName} onClick ={(event) => {handleItemClick(event)}}>
-        <Center h={appState.imageWidth + 2} w={appState.imageWidth + 2}>
-          <Show when={props.display_info} fallback={<></>}>
+        <Center h={fullClickableWidth} w={fullClickableWidth}>
+          <Show when={props.basic_display_info} fallback={<></>}>
             <Tooltip
               className="tooltip"
               label={props.tooltipLabel.replaceAll("\\u000a", "\u000a")}
@@ -50,15 +67,29 @@ function ClickableItem(props: ClickableItemProps) {
               overflow="hidden"
             >
                 <img
-                  src={`${baseImagePath}/${props.display_info.imageFilePath}`}
-                  width={appState.imageWidth}
-                  height={appState.imageWidth}
+                  src={`${baseImagePath}/${props.basic_display_info.imageFilePath}`}
+                  width={imageWidth}
+                  height={imageWidth}
                   loading="lazy"
                   decoding="async"
                 />
             </Tooltip>
           </Show>
         </Center>
+        <Show when={props.advanced_display_info} fallback={<></>}>
+          <Box
+            position="absolute"
+            bottom={0}
+            right={0}
+            width={quantityDisplayWidth}
+            height={15}
+            bgColor="white"
+          >
+            <Center h={15} w={quantityDisplayWidth}>
+              {quantityLabel}
+            </Center>
+          </Box>
+        </Show>
       </div>
   );
 }

@@ -4,4 +4,9 @@
 
 .cellNoOutline {
   outline: none;
+  position: relative;
+}
+
+.quantity {
+  position: absolute;
 }
