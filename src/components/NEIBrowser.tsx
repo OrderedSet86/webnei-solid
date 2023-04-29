@@ -11,6 +11,8 @@ import { gql, createGraphQLClient } from "@solid-primitives/graphql"
 import { Image, Tooltip, Text } from "@hope-ui/solid";
 import { produce } from 'solid-js/store'
 
+import FallbackRecipeRenderer from "./FallbackRecipeRenderer";
+
 
 interface QueryResponse {
   getRecipesThatMakeSingleId: {
@@ -118,7 +120,7 @@ function NEIBrowser() {
     }
     `,
     () => ({
-      single_id: appState.currentSidebarItem.itemId || "",
+      single_id: appState.currentBasicSidebarItem?.id || "",
     }),
     { getRecipesThatMakeSingleId: {} } // Initial value
   );
@@ -136,14 +138,8 @@ function NEIBrowser() {
           each={data()?.getRecipesThatMakeSingleId?.OtherRecipes}
         >
           {(recipe, index) => {
-            console.log(recipe());
-            console.log(index)
             return (
-              <Text>
-                {JSON.stringify(recipe().inputItems)}
-                <br/>
-                {JSON.stringify(recipe().outputItems)}
-              </Text>
+              <FallbackRecipeRenderer recipe={recipe()} />
             );
           }}
         </Index>

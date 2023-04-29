@@ -5,8 +5,8 @@ interface AppStateInterface {
   height: number;
   width: number;
   search: string;
-  currentSidebarItem: {
-    itemId?: string;
+  currentBasicSidebarItem: {
+    id?: string;
     localizedName?: string;
     tooltip?: string;
     imageFilePath?: string;
@@ -21,7 +21,7 @@ const [appState, setAppState] = createStore<AppStateInterface>({
   height: window.innerHeight,
   width: window.innerWidth,
   search: '',
-  currentSidebarItem: {},
+  currentBasicSidebarItem: {},
   gql_recipe_response: '',
   export_version: '2.2.8',
   imageWidth: 40 - 2,

@@ -71,9 +71,8 @@ export default function Home() {
             <GridItem h={topHeight} bg="tomato"/>
             <GridItem h={lowerHeight()}>
               <Grid templateColumns="repeat(2, 1fr)" gap={gap} height="100%">
-                <GridItem bg="purple" overflow="hidden">
-                  <FallbackRecipeRenderer recipe={recipe}/>
-                  {/* <NEIBrowser/> */}
+                <GridItem bg="purple" overflow="hidden" overflowY="auto">
+                  <NEIBrowser/>
                 </GridItem>
                 <GridItem bg="green">
                   <Sidebar ownWidth={rightWidth()} ownHeight={lowerHeight()}/>

@@ -37,7 +37,7 @@ function ClickableItem(props: ClickableItemProps) {
   const handleItemClick = (event: MouseEvent) => {
     if (props.basic_display_info) {
       setAppState(produce((s) => {
-        s.currentSidebarItem = props.basic_display_info;
+        s.currentBasicSidebarItem = props.basic_display_info;
       }));
     }
   }
