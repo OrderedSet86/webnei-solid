@@ -24,15 +24,15 @@ const FallbackRecipeRenderer = (props: FallbackRecipeRendererProps) => {
     // Renders a recipe as a 4x4 grid -> 4x4 grid (no darkUI asset)
 
     return (
-        <>
+        <Box outline={'1px solid #1f1f1f'}>
             <Grid templateColumns={`repeat(3, ${recipeWidth}px)`} gap={0} height={sizeStr} bgColor="red">
                 <ItemAndFluidGrid items={props.recipe.inputItems} fluids={props.recipe.inputFluids}/>
                 <Center>
-                    <Divider orientation="vertical"/>
+                    <p style="color:white; font-size:40px">⇒</p>
                 </Center>
                 <ItemAndFluidGrid items={props.recipe.outputItems} fluids={props.recipe.outputFluids}/>
             </Grid>
-        </>
+        </Box>
     );
 }
 
