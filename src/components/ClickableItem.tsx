@@ -115,7 +115,7 @@ function ClickableItem(props: ClickableItemProps) {
 
   // Disable normal context menu on click
   if (parentDiv) {
-    parentDiv.oncontextmenu = (e) => {return false;}
+    parentDiv.oncontextmenu = (e: any) => {return false;}
   }
 
   return parentDiv;
