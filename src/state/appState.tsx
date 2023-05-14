@@ -10,6 +10,7 @@ interface AppStateInterface {
     localizedName?: string;
     tooltip?: string;
     imageFilePath?: string;
+    makeOrUse?: string;
   };
   gql_recipe_response: string;
   export_version: string;

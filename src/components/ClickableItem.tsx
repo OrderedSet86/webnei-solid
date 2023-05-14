@@ -2,6 +2,7 @@ import { Show } from "solid-js";
 import { appState, setAppState } from '~/state/appState'
 import { Box, Center, Image, Tooltip } from "@hope-ui/solid";
 import { produce } from 'solid-js/store'
+import { JSX } from "solid-js" // Typing
 
 import './ClickableItem.css'
 
@@ -34,10 +35,20 @@ function ClickableItem(props: ClickableItemProps) {
   // R: look up sources of item
   // U: look up uses of item
 
-  const handleItemClick = (event: MouseEvent) => {
+  const handleMakeClick = (event: MouseEvent) => {
     if (props.basic_display_info) {
       setAppState(produce((s) => {
         s.currentBasicSidebarItem = props.basic_display_info;
+        s.currentBasicSidebarItem.makeOrUse = "make";
+      }));
+    }
+  }
+
+  const handleUseClick = (event: MouseEvent) => {
+    if (props.basic_display_info) {
+      setAppState(produce((s) => {
+        s.currentBasicSidebarItem = props.basic_display_info;
+        s.currentBasicSidebarItem.makeOrUse = "use";
       }));
     }
   }
@@ -55,43 +66,59 @@ function ClickableItem(props: ClickableItemProps) {
     props.advanced_display_info ? quantityLabel.length * 10 : 0,
   );
 
-  return (
-      <div class={divClassName} onClick ={(event) => {handleItemClick(event)}}>
-        <Center h={fullClickableWidth} w={fullClickableWidth}>
-          <Show when={props.basic_display_info} fallback={<></>}>
-            <Tooltip
-              className="tooltip"
-              label={props.tooltipLabel.replaceAll("\\u000a", "\u000a")}
-              placement="right" 
-              closeOnClick={false}
-              overflow="hidden"
-            >
-                <img
-                  src={`${baseImagePath}/${props.basic_display_info.imageFilePath}`}
-                  width={imageWidth}
-                  height={imageWidth}
-                  loading="lazy"
-                  decoding="async"
-                />
-            </Tooltip>
-          </Show>
-        </Center>
-        <Show when={props.advanced_display_info} fallback={<></>}>
-          <Box
-            position="absolute"
-            bottom={0}
-            right={0}
-            width={quantityDisplayWidth}
-            height={15}
-            bgColor="white"
+  const insideElements = (
+    <>
+      <Center h={fullClickableWidth} w={fullClickableWidth}>
+        <Show when={props.basic_display_info} fallback={<></>}>
+          <Tooltip
+            className="tooltip"
+            label={props.tooltipLabel.replaceAll("\\u000a", "\u000a")}
+            placement="right" 
+            closeOnClick={false}
+            overflow="hidden"
           >
-            <Center h={15} w={quantityDisplayWidth}>
-              {quantityLabel}
-            </Center>
-          </Box>
+              <img
+                src={`${baseImagePath}/${props.basic_display_info.imageFilePath}`}
+                width={imageWidth}
+                height={imageWidth}
+                loading="lazy"
+                decoding="async"
+              />
+          </Tooltip>
         </Show>
-      </div>
+      </Center>
+      <Show when={props.advanced_display_info} fallback={<></>}>
+        <Box
+          position="absolute"
+          bottom={0}
+          right={0}
+          width={quantityDisplayWidth}
+          height={15}
+          bgColor="white"
+        >
+          <Center h={15} w={quantityDisplayWidth}>
+            {quantityLabel}
+          </Center>
+        </Box>
+      </Show>
+    </>
   );
+
+  const parentDiv: any = (
+    <div 
+      class={divClassName} 
+      onClick ={(event) => {handleMakeClick(event)}}
+      onContextMenu={(event) => {handleUseClick(event)}}
+      children={insideElements}
+    />
+  )
+
+  // Disable normal context menu on click
+  if (parentDiv) {
+    parentDiv.oncontextmenu = (e) => {return false;}
+  }
+
+  return parentDiv;
 }
 
 export default ClickableItem;
