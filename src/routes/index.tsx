@@ -32,10 +32,10 @@ export default function Home() {
       <HopeProvider>
         <Box height="100vh" bg="black" padding={0} margin={0}>
           <Grid templateRows="repeat(2, 1fr)" gap={gap} height="100%">
-            <GridItem h={topHeight} bg="tomato"/>
+            <GridItem h={topHeight} bg="#2b2d42"/>
             <GridItem h={lowerHeight()}>
               <Grid templateColumns="repeat(2, 1fr)" gap={gap} height="100%">
-                <GridItem bg="purple" overflow="hidden" overflowY="auto">
+                <GridItem bg="#001219" overflow="hidden" overflowY="auto">
                   <NEIBrowser/>
                 </GridItem>
                 <GridItem bg="green">

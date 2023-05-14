@@ -25,7 +25,7 @@ const FallbackRecipeRenderer = (props: FallbackRecipeRendererProps) => {
 
     return (
         <Box paddingBottom={10}>
-            <Grid templateColumns={`repeat(3, ${recipeWidth}px)`} gap={0} height={sizeStr} bgColor="red">
+            <Grid templateColumns={`repeat(3, ${recipeWidth}px)`} gap={0} height={sizeStr} bg="#001219">
                 <ItemAndFluidGrid items={props.recipe.inputItems} fluids={props.recipe.inputFluids}/>
                 <Center>
                     <p style="color:white; font-size:40px">⇒</p>
@@ -72,7 +72,7 @@ const ItemAndFluidGrid = (props: ItemAndFluidGridProps) => {
                             console.log("Unknown clickable type");
                         }
                         return (
-                            <GridItem bg="blue">
+                            <GridItem bg="#343a40">
                                 <Center>
                                     <ClickableItem
                                         tooltipLabel={index_obj.localizedName}
@@ -85,7 +85,7 @@ const ItemAndFluidGrid = (props: ItemAndFluidGridProps) => {
                             </GridItem>
                         );
                     } else return (
-                        <GridItem bg="blue"/>
+                        <GridItem bg="#343a40"/>
                     );
                 }}
             </Index>
