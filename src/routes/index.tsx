@@ -1,6 +1,7 @@
 import Sidebar from '~/components/Sidebar'
 import NEIBrowser from '~/components/NEIBrowser'
 import FallbackRecipeRenderer from '~/components/FallbackRecipeRenderer'
+import { appStyles } from '~/components/AppStyle'
 import { appState, setAppState } from '~/state/appState'
 
 import { onMount } from 'solid-js'
@@ -30,12 +31,12 @@ export default function Home() {
   return (
     <main>
       <HopeProvider>
-        <Box height="100vh" bg="black" padding={0} margin={0}>
+        <Box height="100vh" bg={appStyles.gapColor} padding={0} margin={0}>
           <Grid templateRows="repeat(2, 1fr)" gap={gap} height="100%">
-            <GridItem h={topHeight} bg="#2b2d42"/>
+            <GridItem h={topHeight} bg={appStyles.navBarColor}/>
             <GridItem h={lowerHeight()}>
               <Grid templateColumns="repeat(2, 1fr)" gap={gap} height="100%">
-                <GridItem bg="#001219" overflow="hidden" overflowY="auto">
+                <GridItem bg={appStyles.recipeBrowserColor} overflow="hidden" overflowY="auto">
                   <NEIBrowser/>
                 </GridItem>
                 <GridItem bg="green">

@@ -2,6 +2,7 @@ import { Index } from 'solid-js'
 import { appState, setAppState } from '~/state/appState'
 import { produce } from 'solid-js/store'
 import { Box, Center, Divider, Grid, GridItem } from '@hope-ui/solid'
+import { appStyles } from '~/components/AppStyle'
 import ClickableItem from './ClickableItem'
 
 
@@ -25,10 +26,10 @@ const FallbackRecipeRenderer = (props: FallbackRecipeRendererProps) => {
 
     return (
         <Box paddingBottom={10}>
-            <Grid templateColumns={`repeat(3, ${recipeWidth}px)`} gap={0} height={sizeStr} bg="#001219">
+            <Grid templateColumns={`repeat(3, ${recipeWidth}px)`} gap={0} height={sizeStr} bg={appStyles.recipeBrowserColor}>
                 <ItemAndFluidGrid items={props.recipe.inputItems} fluids={props.recipe.inputFluids}/>
                 <Center>
-                    <p style="color:white; font-size:40px">⇒</p>
+                    <p style={`color:${appStyles.recipeArrowColor}; font-size:40px`}>⇒</p>
                 </Center>
                 <ItemAndFluidGrid items={props.recipe.outputItems} fluids={props.recipe.outputFluids}/>
             </Grid>
@@ -62,6 +63,7 @@ const ItemAndFluidGrid = (props: ItemAndFluidGridProps) => {
                     if (index_obj) {
                         let clickableType = "";
                         let quantity = -1;
+
                         if (index_obj.hasOwnProperty("stackSize")) {
                             clickableType = "item";
                             quantity = index_obj.stackSize;
@@ -71,8 +73,9 @@ const ItemAndFluidGrid = (props: ItemAndFluidGridProps) => {
                         } else {
                             console.log("Unknown clickable type");
                         }
+
                         return (
-                            <GridItem bg="#343a40">
+                            <GridItem bg={appStyles.recipeGridColor}>
                                 <Center>
                                     <ClickableItem
                                         tooltipLabel={index_obj.localizedName}
@@ -85,7 +88,7 @@ const ItemAndFluidGrid = (props: ItemAndFluidGridProps) => {
                             </GridItem>
                         );
                     } else return (
-                        <GridItem bg="#343a40"/>
+                        <GridItem bg={appStyles.recipeGridColor}/>
                     );
                 }}
             </Index>
