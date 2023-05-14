@@ -44,24 +44,6 @@ function NEIBrowser() {
         ...NEIBaseRecipeFragment
       }
       additionalInfo
-      fluidInputDims {
-        height
-        width
-      }
-      fluidOutputDims {
-        height
-        width
-      }
-      iconId
-      iconInfo
-      itemInputDims {
-        height
-        width
-      }
-      itemOutputDims {
-        height
-        width
-      }
       recipeId
       requiresCleanroom
       requiresLowGravity
@@ -74,49 +56,83 @@ function NEIBrowser() {
   `
 
   const queryFragments = `
-    fragment NEIFluidFragment on NEIFluid {
-      density
-      fluidId
-      gaseous
-      id
-      imageFilePath
-      localizedName
-      liters
-      modId
-      nbt
-      outputProbability
-      position
-      temperature
+  fragment NEIFluidFragment on NEIFluid {
+    density
+    fluidId
+    gaseous
+    id
+    imageFilePath
+    input
+    internalName
+    localizedName
+    liters
+    luminosity
+    modId
+    nbt
+    outputProbability
+    position
+    temperature
+    unlocalizedName
+    viscosity
+  }
+  
+  fragment NEIItemFragment on NEIItem {
+    id
+    localizedName
+    stackSize
+    imageFilePath
+    input
+    internalName
+    itemDamage
+    itemId
+    maxDamage
+    maxStackSize
+    modId
+    nbt
+    outputProbability
+    position
+    tooltip
+    unlocalizedName
+  }
+  
+  fragment RecipeDimensionFragment on NEIRecipeDimensions {
+    height
+    width
+  }
+  
+  fragment NEIDimensionFragment on NEIAllDimensions {
+    itemInputDims {
+      ...RecipeDimensionFragment
     }
-    
-    fragment NEIItemFragment on NEIItem {
-      id
-      localizedName
-      stackSize
-      imageFilePath
-      itemId
-      modId
-      nbt
-      outputProbability
-      position
-      tooltip
+    itemOutputDims {
+      ...RecipeDimensionFragment
     }
-    
-    fragment NEIBaseRecipeFragment on NEIBaseRecipe {
-      recipeId
-      inputItems {
-        ...NEIItemFragment
-      }
-      outputItems {
-        ...NEIItemFragment
-      }
-      inputFluids {
-        ...NEIFluidFragment
-      }
-      outputFluids {
-        ...NEIFluidFragment
-      }
+    fluidInputDims {
+      ...RecipeDimensionFragment
     }
+    fluidOutputDims {
+      ...RecipeDimensionFragment
+    }
+  }
+  
+  fragment NEIBaseRecipeFragment on NEIBaseRecipe {
+    recipeId
+    dimensions {
+      ...NEIDimensionFragment
+    }
+    inputItems {
+      ...NEIItemFragment
+    }
+    outputItems {
+      ...NEIItemFragment
+    }
+    inputFluids {
+      ...NEIFluidFragment
+    }
+    outputFluids {
+      ...NEIFluidFragment
+    }
+  }
   `
 
   const [makeInput, setMakeInput] = createSignal("")
