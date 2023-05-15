@@ -91,7 +91,7 @@ const ItemAndFluidGrid = (props: ItemAndFluidGridProps) => {
     // Then iterate over the gridSize ** 2 positions and render the item or fluid if it exists
     // Note: indexes are column-major order, so need to convert to row-major order
     
-    const positionToItemMapping = props.items.concat(props.fluids).reduce((map, obj) => {
+    const positionToItemMapping = props.items.reduce((map, obj) => {
         map.set(obj.position, obj);
         return map;
     }, new Map<number, any>());
@@ -101,8 +101,8 @@ const ItemAndFluidGrid = (props: ItemAndFluidGridProps) => {
 
     return (
         <Grid
-            templateColumns={gridHeightLayoutStr}
-            templateRows={gridWidthLayoutStr}
+            templateColumns={gridWidthLayoutStr}
+            templateRows={gridHeightLayoutStr}
             gap={gap}
             height={boxCountToGridSize(props.itemDims.height)}
             width={boxCountToGridSize(props.itemDims.width)}
@@ -139,7 +139,9 @@ const ItemAndFluidGrid = (props: ItemAndFluidGridProps) => {
                             </GridItem>
                         );
                     } else return (
-                        <GridItem bg={appStyles.recipeGridColor}/>
+                        <GridItem
+                            bg={appStyles.recipeGridColor}
+                        />
                     );
                 }}
             </Index>

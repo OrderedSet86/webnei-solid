@@ -185,7 +185,12 @@ function NEIBrowser() {
       <Show when={appState.currentBasicSidebarItem.makeOrUse === "make"}>
         <Show when={!makeData.loading}>
           <Index
-            each={makeData()?.getRecipesThatMakeSingleId?.OtherRecipes}
+            each={makeData()?.getRecipesThatMakeSingleId?.OtherRecipes?.concat(
+              // TODO: Figure out why Typescript is mad about this
+              makeData()?.getRecipesThatMakeSingleId?.GTRecipes?.map((gtRecipe) => {
+                return gtRecipe.baseRecipe
+              })
+            )}
           >
             {(recipe, index) => {
               return (
@@ -198,7 +203,11 @@ function NEIBrowser() {
       <Show when={appState.currentBasicSidebarItem.makeOrUse === "use"}>
         <Show when={!useData.loading}>
           <Index
-            each={useData()?.getRecipesThatUseSingleId?.OtherRecipes}
+            each={useData()?.getRecipesThatUseSingleId?.OtherRecipes?.concat(
+              useData()?.getRecipesThatUseSingleId?.GTRecipes?.map((gtRecipe) => {
+                return gtRecipe.baseRecipe
+              })
+            )}
           >
             {(recipe, index) => {
               return (
