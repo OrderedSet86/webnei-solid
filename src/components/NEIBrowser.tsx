@@ -192,37 +192,14 @@ function NEIBrowser() {
             gtRecipes={makeData()?.getRecipesThatMakeSingleId?.GTRecipes}
             otherRecipes={makeData()?.getRecipesThatMakeSingleId?.OtherRecipes}
           />
-          {/* <Index
-            each={makeData()?.getRecipesThatMakeSingleId?.OtherRecipes?.concat(
-              // TODO: Figure out why Typescript is mad about this
-              makeData()?.getRecipesThatMakeSingleId?.GTRecipes?.map((gtRecipe) => {
-                return gtRecipe.baseRecipe
-              })
-            )}
-          >
-            {(recipe, index) => {
-              return (
-                <FallbackRecipeRenderer recipe={recipe()} />
-              );
-            }}
-          </Index> */}
         </Show>
       </Show>
       <Show when={appState.currentBasicSidebarItem.makeOrUse === "use"}>
         <Show when={!useData.loading}>
-          {/* <Index
-            each={useData()?.getRecipesThatUseSingleId?.OtherRecipes?.concat(
-              useData()?.getRecipesThatUseSingleId?.GTRecipes?.map((gtRecipe) => {
-                return gtRecipe.baseRecipe
-              })
-            )}
-          >
-            {(recipe, index) => {
-              return (
-                <FallbackRecipeRenderer recipe={recipe()} />
-              );
-            }}
-          </Index> */}
+          <MachineTabs
+            gtRecipes={useData()?.getRecipesThatUseSingleId?.GTRecipes}
+            otherRecipes={useData()?.getRecipesThatUseSingleId?.OtherRecipes}
+          />
         </Show>
       </Show>
     </>

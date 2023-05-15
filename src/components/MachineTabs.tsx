@@ -4,26 +4,32 @@ import { Box, Center, Grid, Tooltip, Tabs, TabList, Tab, TabPanel } from "@hope-
 import FallbackRecipeRenderer from "./FallbackRecipeRenderer"
 
 
+interface BaseRecipeInterface {
+    iconId: string,
+    recipeType: string,
+}
+
 interface GTRecipeInterface {
     localizedMachineName: string,
-    baseRecipe: {
-        iconId: string,
-        recipeType: string,
-    },
+    baseRecipe: BaseRecipeInterface,
 }
 
 interface MachineTabsInterface {
     gtRecipes: Array<GTRecipeInterface>,
-    otherRecipes: Array<{}>,
+    otherRecipes: Array<BaseRecipeInterface>,
 }
 
 const MachineTabs = (props: MachineTabsInterface) => {
 
-    if (props.gtRecipes) {
+    if (props.gtRecipes && props.otherRecipes) {
+        const allRecipes = props.otherRecipes.concat(
+            props.gtRecipes.map((recipe) => recipe.baseRecipe)
+        )
+
         // Group recipes by icon_id
-        const iconToRecipes = new Map<string, Array<GTRecipeInterface>>();
-        for (const recipe of props.gtRecipes) {
-            const iconId = recipe.baseRecipe.iconId;
+        const iconToRecipes = new Map<string, Array<BaseRecipeInterface>>();
+        for (const recipe of allRecipes) {
+            const iconId = recipe.iconId;
             if (iconToRecipes.has(iconId)) {
                 iconToRecipes.get(iconId)?.push(recipe);
             }
@@ -33,8 +39,8 @@ const MachineTabs = (props: MachineTabsInterface) => {
         }
 
         const iconToLocalizedName = new Map<string, string>();
-        for (const recipe of props.gtRecipes) {
-            iconToLocalizedName.set(recipe.baseRecipe.iconId, recipe.baseRecipe.recipeType);
+        for (const recipe of allRecipes) {
+            iconToLocalizedName.set(recipe.iconId, recipe.recipeType);
         }
 
         const indexKeys = Array.from(iconToRecipes.keys());
@@ -56,7 +62,7 @@ const MachineTabs = (props: MachineTabsInterface) => {
                                 <TabPanel>
                                     <Index each={associated_recipes}>
                                         {(recipe, index) => (
-                                            <FallbackRecipeRenderer recipe={recipe().baseRecipe} />
+                                            <FallbackRecipeRenderer recipe={recipe()} />
                                         )}
                                     </Index>
                                 </TabPanel>
