@@ -11,6 +11,8 @@ import { gql, createGraphQLClient } from "@solid-primitives/graphql"
 import { produce } from 'solid-js/store'
 
 import FallbackRecipeRenderer from "./FallbackRecipeRenderer";
+import MachineTabs from "./MachineTabs"
+
 
 interface QueryInternals {
   singleId?: string
@@ -34,7 +36,6 @@ function NEIBrowser() {
 
   const queryCore = `
     singleId
-    makeOrUse
     GTRecipes {
       localizedMachineName
       amperage
@@ -117,6 +118,9 @@ function NEIBrowser() {
   
   fragment NEIBaseRecipeFragment on NEIBaseRecipe {
     recipeId
+
+    recipeType
+    iconId
     dimensions {
       ...NEIDimensionFragment
     }
@@ -182,6 +186,10 @@ function NEIBrowser() {
 
   return (
     <>
+      <MachineTabs
+        gtRecipes={makeData()?.getRecipesThatMakeSingleId?.GTRecipes}
+        otherRecipes={makeData()?.getRecipesThatMakeSingleId?.OtherRecipes}
+      />
       <Show when={appState.currentBasicSidebarItem.makeOrUse === "make"}>
         <Show when={!makeData.loading}>
           <Index
