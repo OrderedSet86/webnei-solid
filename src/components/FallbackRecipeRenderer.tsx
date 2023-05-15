@@ -119,98 +119,60 @@ const ItemAndFluidGrid = (props: ItemAndFluidGridProps) => {
         return map;
     }, new Map<number, any>());
 
-    const itemGrid = (
-        <Grid
-            templateColumns={`repeat(${props.itemDims.width}, 1fr)`}
-            templateRows={`repeat(${props.itemDims.height}, 1fr)`}
-            gap={gap}
-            height={boxCountToGridSize(props.itemDims.height)}
-            width={boxCountToGridSize(props.itemDims.width)}
-        >
-            <Index each={Array.from({ length: props.itemDims.width * props.itemDims.height })}>
-                {(_, index) => {
-                    const index_obj = positionToItemMapping.get(index);
+    const constructGrid = (dimension: BasicDimensions, positionMapping: Map<number, any>) => {
+        return (
+            <Grid
+                templateColumns={`repeat(${dimension.width}, 1fr)`}
+                templateRows={`repeat(${dimension.height}, 1fr)`}
+                gap={gap}
+                height={boxCountToGridSize(dimension.height)}
+                width={boxCountToGridSize(dimension.width)}
+            >
+                <Index each={Array.from({ length: dimension.width * dimension.height })}>
+                    {(_, index) => {
+                        const index_obj = positionMapping.get(index);
 
-                    if (index_obj) {
-                        let clickableType = "";
-                        let quantity = -1;
+                        if (index_obj) {
+                            let clickableType = "";
+                            let quantity = -1;
 
-                        if (index_obj.hasOwnProperty("stackSize")) {
-                            clickableType = "item";
-                            quantity = index_obj.stackSize;
-                        } else {
-                            console.log("Unknown clickable type");
-                        }
+                            if (index_obj.hasOwnProperty("stackSize")) {
+                                clickableType = "item";
+                                quantity = index_obj.stackSize;
+                            } else if (index_obj.hasOwnProperty("liters")) {
+                                clickableType = "fluid";
+                                quantity = index_obj.liters;
+                            } else {
+                                console.log("Unknown clickable type");
+                            }
 
-                        return (
-                            <GridItem bg={appStyles.recipeGridColor}>
-                                <Center>
-                                    <ClickableItem
-                                        tooltipLabel={index_obj.localizedName}
-                                        basic_display_info={index_obj}
-                                        divClass={"cellNoOutline"}
-                                        scaleFactor={scaleFactor}
-                                        advanced_display_info={{quantity: quantity, clickableType: clickableType}}
-                                    />
-                                </Center>
-                            </GridItem>
+                            return (
+                                <GridItem bg={appStyles.recipeGridColor}>
+                                    <Center>
+                                        <ClickableItem
+                                            tooltipLabel={index_obj.localizedName}
+                                            basic_display_info={index_obj}
+                                            divClass={"cellNoOutline"}
+                                            scaleFactor={scaleFactor}
+                                            advanced_display_info={{quantity: quantity, clickableType: clickableType}}
+                                        />
+                                    </Center>
+                                </GridItem>
+                            );
+                        } else return (
+                            // No item at this position
+                            <GridItem
+                                bg={appStyles.recipeGridColor}
+                            />
                         );
-                    } else return (
-                        // No item at this position
-                        <GridItem
-                            bg={appStyles.recipeGridColor}
-                        />
-                    );
-                }}
-            </Index>
-        </Grid>
-    )
-    const fluidGrid = (
-        <Grid
-            templateColumns={`repeat(${props.fluidDims.width}, 1fr)`}
-            templateRows={`repeat(${props.fluidDims.height}, 1fr)`}
-            gap={gap}
-            height={boxCountToGridSize(props.fluidDims.height)}
-            width={boxCountToGridSize(props.fluidDims.width)}
-        >
-            <Index each={Array.from({ length: props.fluidDims.width * props.fluidDims.height })}>
-                {(_, index) => {
-                    const index_obj = positionToFluidMapping.get(index);
+                    }}
+                </Index>
+            </Grid>
+        )
+    }
 
-                    if (index_obj) {
-                        let clickableType = "";
-                        let quantity = -1;
-
-                        if (index_obj.hasOwnProperty("liters")) {
-                            clickableType = "fluid";
-                            quantity = index_obj.liters;
-                        } else {
-                            console.log("Unknown clickable type");
-                        }
-
-                        return (
-                            <GridItem bg={appStyles.recipeGridColor}>
-                                <Center>
-                                    <ClickableItem
-                                        tooltipLabel={index_obj.localizedName}
-                                        basic_display_info={index_obj}
-                                        divClass={"cellNoOutline"}
-                                        scaleFactor={scaleFactor}
-                                        advanced_display_info={{quantity: quantity, clickableType: clickableType}}
-                                    />
-                                </Center>
-                            </GridItem>
-                        );
-                    } else return (
-                        // No item at this position
-                        <GridItem
-                            bg={appStyles.recipeGridColor}
-                        />
-                    );
-                }}
-            </Index>
-        </Grid>
-    )
+    const itemGrid = constructGrid(props.itemDims, positionToItemMapping);
+    const fluidGrid = constructGrid(props.fluidDims, positionToFluidMapping);
 
     return (
         <>

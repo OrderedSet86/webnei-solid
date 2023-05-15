@@ -186,13 +186,13 @@ function NEIBrowser() {
 
   return (
     <>
-      <MachineTabs
-        gtRecipes={makeData()?.getRecipesThatMakeSingleId?.GTRecipes}
-        otherRecipes={makeData()?.getRecipesThatMakeSingleId?.OtherRecipes}
-      />
       <Show when={appState.currentBasicSidebarItem.makeOrUse === "make"}>
         <Show when={!makeData.loading}>
-          <Index
+          <MachineTabs
+            gtRecipes={makeData()?.getRecipesThatMakeSingleId?.GTRecipes}
+            otherRecipes={makeData()?.getRecipesThatMakeSingleId?.OtherRecipes}
+          />
+          {/* <Index
             each={makeData()?.getRecipesThatMakeSingleId?.OtherRecipes?.concat(
               // TODO: Figure out why Typescript is mad about this
               makeData()?.getRecipesThatMakeSingleId?.GTRecipes?.map((gtRecipe) => {
@@ -205,12 +205,12 @@ function NEIBrowser() {
                 <FallbackRecipeRenderer recipe={recipe()} />
               );
             }}
-          </Index>
+          </Index> */}
         </Show>
       </Show>
       <Show when={appState.currentBasicSidebarItem.makeOrUse === "use"}>
         <Show when={!useData.loading}>
-          <Index
+          {/* <Index
             each={useData()?.getRecipesThatUseSingleId?.OtherRecipes?.concat(
               useData()?.getRecipesThatUseSingleId?.GTRecipes?.map((gtRecipe) => {
                 return gtRecipe.baseRecipe
@@ -222,7 +222,7 @@ function NEIBrowser() {
                 <FallbackRecipeRenderer recipe={recipe()} />
               );
             }}
-          </Index>
+          </Index> */}
         </Show>
       </Show>
     </>
