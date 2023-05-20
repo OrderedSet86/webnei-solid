@@ -32,7 +32,6 @@ function ClickableItem(props: ClickableItemProps) {
   // Left click: look up sources of item
 
   // TODO: Later want this to support:
-  // Right click: look up uses of item
   // R: look up sources of item
   // U: look up uses of item
 
@@ -43,11 +42,9 @@ function ClickableItem(props: ClickableItemProps) {
         s.currentBasicSidebarItem.makeOrUse = "make";
       }));
     }
-    console.log(appState)
   }
 
   const handleUseClick = (event: MouseEvent) => {
-    console.log(event)
     if (props.basic_display_info) {
       setAppState(produce((s) => {
         s.currentBasicSidebarItem = props.basic_display_info;

@@ -165,7 +165,6 @@ function NEIBrowser() {
     if (appState.currentBasicSidebarItem.itemId) {
       if (appState.currentBasicSidebarItem.makeOrUse === "make") {
         setMakeInput(appState.currentBasicSidebarItem.itemId)
-        console.log(`Set makeInput to ${appState.currentBasicSidebarItem.itemId}`)
       } else if (appState.currentBasicSidebarItem.makeOrUse === "use") {
         setUseInput(appState.currentBasicSidebarItem.itemId)
       }

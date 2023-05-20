@@ -8,10 +8,6 @@ import { AssociatedRecipesInterface, BaseRecipeInterface } from "./Interfaces"
 
 const MachineTabs = (props: AssociatedRecipesInterface) => {
 
-    createEffect(() => {
-        console.log(props)
-    })
-
     if (props.GTRecipes && props.OtherRecipes) {
         const allRecipes = props.OtherRecipes.concat(
             props.GTRecipes.map((recipe) => recipe.baseRecipe)

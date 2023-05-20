@@ -5,7 +5,7 @@ import { Box, Center, Divider, Grid, GridItem } from '@hope-ui/solid'
 import { appState, setAppState } from '~/state/appState'
 import { appStyles } from './AppStyle'
 import ClickableItem from './ClickableItem'
-import { BaseRecipeInterface, BasicDimensionsInterface } from './Interfaces'
+import { BaseRecipeInterface, BasicDimensionsInterface, ItemInterface, FluidInterface } from './Interfaces'
 
 
 interface FallbackRecipeRendererProps {
@@ -83,27 +83,27 @@ const FallbackRecipeRenderer = (props: FallbackRecipeRendererProps) => {
 }
 
 interface ItemAndFluidGridProps {
-    items: Array<any>
-    fluids: Array<any>
+    items: Array<ItemInterface>
+    fluids: Array<FluidInterface>
     itemDims: BasicDimensionsInterface
     fluidDims: BasicDimensionsInterface
 }
 
 const ItemAndFluidGrid = (props: ItemAndFluidGridProps) => {
     // Create hash map of position -> item or fluid
-    // Then iterate over the gridSize ** 2 positions and render the item or fluid if it exists
+    // Then iterate over the grid positions and render the item or fluid if it exists
     // Note: indexes are column-major order, so need to convert to row-major order
     
     const positionToItemMapping = props.items.reduce((map, obj) => {
         map.set(obj.position, obj);
         return map;
-    }, new Map<number, any>());
+    }, new Map<number, ItemInterface>());
     const positionToFluidMapping = props.fluids.reduce((map, obj) => {
         map.set(obj.position, obj);
         return map;
-    }, new Map<number, any>());
+    }, new Map<number, FluidInterface>());
 
-    const constructGrid = (dimension: BasicDimensionsInterface, positionMapping: Map<number, any>) => {
+    const constructGrid = (dimension: BasicDimensionsInterface, positionMapping: Map<number, ItemInterface | FluidInterface>) => {
         return (
             <Grid
                 templateColumns={`repeat(${dimension.width}, 1fr)`}
@@ -122,20 +122,27 @@ const ItemAndFluidGrid = (props: ItemAndFluidGridProps) => {
 
                             if (index_obj.hasOwnProperty("stackSize")) {
                                 clickableType = "item";
-                                quantity = index_obj.stackSize;
+                                quantity = (index_obj as ItemInterface).stackSize;
                             } else if (index_obj.hasOwnProperty("liters")) {
                                 clickableType = "fluid";
-                                quantity = index_obj.liters;
+                                quantity = (index_obj as FluidInterface).liters;
                             } else {
                                 console.log("Unknown clickable type");
                             }
+
+                            const tooltipLabel = clickableType == "item" ? (index_obj as ItemInterface).tooltip : "";
 
                             return (
                                 <GridItem bg={appStyles.recipeGridColor}>
                                     <Center>
                                         <ClickableItem
                                             tooltipLabel={index_obj.localizedName}
-                                            basic_display_info={index_obj}
+                                            basic_display_info={{
+                                                itemId: index_obj.id,
+                                                localizedName: index_obj.localizedName,
+                                                tooltip: tooltipLabel,
+                                                imageFilePath: index_obj.imageFilePath,
+                                            }}
                                             divClass={"cellNoOutline"}
                                             scaleFactor={scaleFactor}
                                             advanced_display_info={{quantity: quantity, clickableType: clickableType}}
