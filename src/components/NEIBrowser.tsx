@@ -162,34 +162,35 @@ function NEIBrowser() {
   createEffect(() => {
     // When a new appState.currentBasicSidebarItem is set, check if it is "make" or "use"
     // Then update the relevant GraphQL query input
-    if (appState.currentBasicSidebarItem.id) {
+    if (appState.currentBasicSidebarItem.itemId) {
       if (appState.currentBasicSidebarItem.makeOrUse === "make") {
-        setMakeInput(appState.currentBasicSidebarItem.id)
+        setMakeInput(appState.currentBasicSidebarItem.itemId)
+        console.log(`Set makeInput to ${appState.currentBasicSidebarItem.itemId}`)
       } else if (appState.currentBasicSidebarItem.makeOrUse === "use") {
-        setUseInput(appState.currentBasicSidebarItem.id)
+        setUseInput(appState.currentBasicSidebarItem.itemId)
       }
     }
   })
 
   return (
-    // Why ts-expect-error?
+    // Why ts-ignore?
     // For some reason Typescript doesn't recognize that the graphql output is
-    // guaranteed to be defined (as AssociatedRecipes) when the query is not loading.
+    //  guaranteed to be defined (as AssociatedRecipes) when the query is not loading.
 
     <>
       <Show when={appState.currentBasicSidebarItem.makeOrUse === "make"}>
         <Show when={!makeData.loading}>
-          {/* @ts-expect-error */}
+          {/* @ts-ignore */}
           <MachineTabs
-            {...makeData()?.getRecipesThatMakeSingleId}
+            {...(makeData()?.getRecipesThatMakeSingleId)}
           />
         </Show>
       </Show>
       <Show when={appState.currentBasicSidebarItem.makeOrUse === "use"}>
         <Show when={!useData.loading}>
-          {/* @ts-expect-error */}
+          {/* @ts-ignore */}
           <MachineTabs
-            {...useData()?.getRecipesThatUseSingleId}
+            {...(useData()?.getRecipesThatUseSingleId)}
           />
         </Show>
       </Show>

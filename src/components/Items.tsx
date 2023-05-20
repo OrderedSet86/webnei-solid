@@ -6,6 +6,7 @@ import {
 } from "solid-js";
 import { appState } from '~/state/appState'
 import { gql, createGraphQLClient } from "@solid-primitives/graphql"
+import { SidebarItemInterface } from './Interfaces';
 
 import "./Items.css"
 
@@ -23,7 +24,7 @@ function Items(props: {ownWidth: number, ownHeight: number}) {
 
   // GraphQL
   const graphQLClient = createGraphQLClient("http://localhost:5000/graphql");
-  const [data, {refetch}] = graphQLClient<{ getNSidebarItems: Array<any>}>(
+  const [data, {refetch}] = graphQLClient<{ getNSidebarItems: Array<SidebarItemInterface>}>(
     gql`
       query SidebarItems(
         $limit: Int!,
@@ -60,19 +61,12 @@ function Items(props: {ownWidth: number, ownHeight: number}) {
             {(_, index) => {
               const tooltipLabel = `${data()?.getNSidebarItems?.[index]?.['tooltip']}`
 
-              const proto_display_info = () => data()?.getNSidebarItems?.[index]
-              let basic_display_info = proto_display_info();
-              if (basic_display_info !== undefined) {
-                basic_display_info = {
-                  ...proto_display_info(),
-                  id: proto_display_info().itemId
-                }
-                delete basic_display_info.itemId
-              }
+              const basic_display_info = data()?.getNSidebarItems?.[index]
 
               return (
                 <ClickableItem 
                   tooltipLabel={tooltipLabel}
+                  // @ts-ignore
                   basic_display_info={basic_display_info}
                   divClass={"cell"}
                   scaleFactor={1}

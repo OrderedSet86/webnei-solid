@@ -13,7 +13,7 @@ export interface RecipeDimensionInterface {
 
 export interface ItemInterface {
     id: string
-    itemId: string
+    itemId: number
 
     position: number
     stackSize: number
@@ -88,6 +88,13 @@ export interface GTRecipeInterface {
 
 export interface AssociatedRecipesInterface {
     singleId: string
-    gtRecipes: Array<GTRecipeInterface>
-    otherRecipes: Array<BaseRecipeInterface>
+    GTRecipes: Array<GTRecipeInterface>
+    OtherRecipes: Array<BaseRecipeInterface>
+}
+
+export interface SidebarItemInterface {
+    itemId: string
+    imageFilePath: string
+    localizedName: string
+    tooltip: string
 }

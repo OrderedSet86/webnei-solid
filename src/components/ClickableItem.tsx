@@ -9,10 +9,11 @@ import './ClickableItem.css'
 interface ClickableItemProps {
   tooltipLabel: string;
   basic_display_info: { // aka SidebarItem
-    id: string;
+    itemId: string;
     localizedName: string;
     tooltip: string;
     imageFilePath: string;
+    makeOrUse?: string;
   };
   scaleFactor: number;
   divClass?: string;
@@ -24,6 +25,7 @@ interface ClickableItemProps {
 
 const baseImagePath = "./nei_images";
 const fallbackImage = "missing.png";
+
 
 function ClickableItem(props: ClickableItemProps) {
   // Currently supports:
@@ -41,9 +43,11 @@ function ClickableItem(props: ClickableItemProps) {
         s.currentBasicSidebarItem.makeOrUse = "make";
       }));
     }
+    console.log(appState)
   }
 
   const handleUseClick = (event: MouseEvent) => {
+    console.log(event)
     if (props.basic_display_info) {
       setAppState(produce((s) => {
         s.currentBasicSidebarItem = props.basic_display_info;

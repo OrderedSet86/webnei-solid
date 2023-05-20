@@ -8,9 +8,13 @@ import { AssociatedRecipesInterface, BaseRecipeInterface } from "./Interfaces"
 
 const MachineTabs = (props: AssociatedRecipesInterface) => {
 
-    if (props.gtRecipes && props.otherRecipes) {
-        const allRecipes = props.otherRecipes.concat(
-            props.gtRecipes.map((recipe) => recipe.baseRecipe)
+    createEffect(() => {
+        console.log(props)
+    })
+
+    if (props.GTRecipes && props.OtherRecipes) {
+        const allRecipes = props.OtherRecipes.concat(
+            props.GTRecipes.map((recipe) => recipe.baseRecipe)
         )
 
         // Group recipes by icon_id

@@ -6,7 +6,7 @@ interface AppStateInterface {
   width: number;
   search: string;
   currentBasicSidebarItem: {
-    id?: string;
+    itemId?: string;
     localizedName?: string;
     tooltip?: string;
     imageFilePath?: string;
