@@ -60,13 +60,11 @@ function Items(props: {ownWidth: number, ownHeight: number}) {
           <Index each={Array.from({ length: numBoxes()})}>
             {(_, index) => {
               const tooltipLabel = `${data()?.getNSidebarItems?.[index]?.['tooltip']}`
-
-              const basic_display_info = data()?.getNSidebarItems?.[index]
+              const basic_display_info = data()?.getNSidebarItems?.[index] as SidebarItemInterface
 
               return (
                 <ClickableItem 
                   tooltipLabel={tooltipLabel}
-                  // @ts-ignore
                   basic_display_info={basic_display_info}
                   divClass={"cell"}
                   scaleFactor={1}
