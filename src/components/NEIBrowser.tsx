@@ -1,33 +1,20 @@
 import {
     createEffect,
-    createMemo,
     createSignal,
-    ErrorBoundary,
-    Index,
     Show,
 } from "solid-js";
 import { appState, setAppState } from '~/state/appState'
 import { gql, createGraphQLClient } from "@solid-primitives/graphql"
-import { produce } from 'solid-js/store'
 
-import FallbackRecipeRenderer from "./FallbackRecipeRenderer";
 import MachineTabs from "./MachineTabs"
+import { AssociatedRecipesInterface } from "./Interfaces";
 
 
-interface QueryInternals {
-  singleId?: string
-  makeOrUse?: string
-  GTRecipes?: Array<{}>
-  OtherRecipes?: Array<{
-    inputItems?: Array<{}>
-    outputItems?: Array<{}>
-  }>
-}
 interface MakeQueryResponse {
-  getRecipesThatMakeSingleId: QueryInternals
+  getRecipesThatMakeSingleId: AssociatedRecipesInterface | {}
 }
 interface UseQueryResponse {
-  getRecipesThatUseSingleId: QueryInternals
+  getRecipesThatUseSingleId: AssociatedRecipesInterface | {}
 }
 
 
@@ -185,20 +172,24 @@ function NEIBrowser() {
   })
 
   return (
+    // Why ts-expect-error?
+    // For some reason Typescript doesn't recognize that the graphql output is
+    // guaranteed to be defined (as AssociatedRecipes) when the query is not loading.
+
     <>
       <Show when={appState.currentBasicSidebarItem.makeOrUse === "make"}>
         <Show when={!makeData.loading}>
+          {/* @ts-expect-error */}
           <MachineTabs
-            gtRecipes={makeData()?.getRecipesThatMakeSingleId?.GTRecipes}
-            otherRecipes={makeData()?.getRecipesThatMakeSingleId?.OtherRecipes}
+            {...makeData()?.getRecipesThatMakeSingleId}
           />
         </Show>
       </Show>
       <Show when={appState.currentBasicSidebarItem.makeOrUse === "use"}>
         <Show when={!useData.loading}>
+          {/* @ts-expect-error */}
           <MachineTabs
-            gtRecipes={useData()?.getRecipesThatUseSingleId?.GTRecipes}
-            otherRecipes={useData()?.getRecipesThatUseSingleId?.OtherRecipes}
+            {...useData()?.getRecipesThatUseSingleId}
           />
         </Show>
       </Show>

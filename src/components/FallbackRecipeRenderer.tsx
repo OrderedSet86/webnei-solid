@@ -1,31 +1,15 @@
 import { Index } from 'solid-js'
-import { appState, setAppState } from '~/state/appState'
 import { produce } from 'solid-js/store'
 import { Box, Center, Divider, Grid, GridItem } from '@hope-ui/solid'
-import { appStyles } from '~/components/AppStyle'
+
+import { appState, setAppState } from '~/state/appState'
+import { appStyles } from './AppStyle'
 import ClickableItem from './ClickableItem'
+import { BaseRecipeInterface, BasicDimensionsInterface } from './Interfaces'
 
-
-interface BasicDimensions {
-    width: number
-    height: number
-}
-
-interface RecipeDimensionProps {
-    itemInputDims: BasicDimensions
-    itemOutputDims: BasicDimensions
-    fluidInputDims: BasicDimensions
-    fluidOutputDims: BasicDimensions
-}
 
 interface FallbackRecipeRendererProps {
-    recipe: {
-        dimensions: RecipeDimensionProps
-        inputItems: Array<any>
-        inputFluids: Array<any>
-        outputItems: Array<any>
-        outputFluids: Array<any>
-    }
+    recipe: BaseRecipeInterface
 }
 
 const scaleFactor = 1.25
@@ -101,8 +85,8 @@ const FallbackRecipeRenderer = (props: FallbackRecipeRendererProps) => {
 interface ItemAndFluidGridProps {
     items: Array<any>
     fluids: Array<any>
-    itemDims: BasicDimensions
-    fluidDims: BasicDimensions
+    itemDims: BasicDimensionsInterface
+    fluidDims: BasicDimensionsInterface
 }
 
 const ItemAndFluidGrid = (props: ItemAndFluidGridProps) => {
@@ -119,7 +103,7 @@ const ItemAndFluidGrid = (props: ItemAndFluidGridProps) => {
         return map;
     }, new Map<number, any>());
 
-    const constructGrid = (dimension: BasicDimensions, positionMapping: Map<number, any>) => {
+    const constructGrid = (dimension: BasicDimensionsInterface, positionMapping: Map<number, any>) => {
         return (
             <Grid
                 templateColumns={`repeat(${dimension.width}, 1fr)`}

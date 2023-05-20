@@ -1,17 +1,16 @@
 import ClickableItem from './ClickableItem'
 import {
-  createEffect,
   createMemo,
   Index,
   Show,
 } from "solid-js";
-import { appState, setAppState } from '~/state/appState'
+import { appState } from '~/state/appState'
 import { gql, createGraphQLClient } from "@solid-primitives/graphql"
-import { produce } from 'solid-js/store'
 
 import "./Items.css"
 
 // Modified from https://www.solidjs.com/examples/ethasketch
+
 
 const boxWidth = 40;
 

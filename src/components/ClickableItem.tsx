@@ -2,14 +2,13 @@ import { Show } from "solid-js";
 import { appState, setAppState } from '~/state/appState'
 import { Box, Center, Image, Tooltip } from "@hope-ui/solid";
 import { produce } from 'solid-js/store'
-import { JSX } from "solid-js" // Typing
 
 import './ClickableItem.css'
 
 
 interface ClickableItemProps {
   tooltipLabel: string;
-  basic_display_info: {
+  basic_display_info: { // aka SidebarItem
     id: string;
     localizedName: string;
     tooltip: string;

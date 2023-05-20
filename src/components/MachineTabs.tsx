@@ -2,24 +2,11 @@ import { createEffect, Index } from "solid-js"
 import { Box, Center, Grid, Tooltip, Tabs, TabList, Tab, TabPanel } from "@hope-ui/solid"
 
 import FallbackRecipeRenderer from "./FallbackRecipeRenderer"
+import { appState, setAppState } from '~/state/appState'
+import { AssociatedRecipesInterface, BaseRecipeInterface } from "./Interfaces"
 
 
-interface BaseRecipeInterface {
-    iconId: string,
-    recipeType: string,
-}
-
-interface GTRecipeInterface {
-    localizedMachineName: string,
-    baseRecipe: BaseRecipeInterface,
-}
-
-interface MachineTabsInterface {
-    gtRecipes: Array<GTRecipeInterface>,
-    otherRecipes: Array<BaseRecipeInterface>,
-}
-
-const MachineTabs = (props: MachineTabsInterface) => {
+const MachineTabs = (props: AssociatedRecipesInterface) => {
 
     if (props.gtRecipes && props.otherRecipes) {
         const allRecipes = props.otherRecipes.concat(
@@ -51,7 +38,9 @@ const MachineTabs = (props: MachineTabsInterface) => {
                     <TabList>
                         <Index each={indexKeys}>
                             {(iconId, index) => (
-                                <Tab>{iconToLocalizedName.get(iconId())}</Tab>
+                                <Tab>
+                                    {iconToLocalizedName.get(iconId())}
+                                </Tab>
                             )}
                         </Index>
                     </TabList>
