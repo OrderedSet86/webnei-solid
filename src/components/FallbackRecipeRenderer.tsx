@@ -1,15 +1,23 @@
 import { Index } from 'solid-js'
-import { produce } from 'solid-js/store'
-import { Box, Center, Divider, Grid, GridItem } from '@hope-ui/solid'
+import { Box, Center, Grid, GridItem } from '@hope-ui/solid'
 
 import { appState, setAppState } from '~/state/appState'
 import { appStyles } from './AppStyle'
 import ClickableItem from './ClickableItem'
-import { BaseRecipeInterface, BasicDimensionsInterface, ItemInterface, FluidInterface } from './Interfaces'
+import {
+    BaseRecipeInterface,
+    BasicDimensionsInterface,
+    FluidInterface,
+    GTRecipeInterface,
+    ItemInterface,
+} from './Interfaces'
+
+import "./FallbackRecipeRenderer.css"
 
 
 interface FallbackRecipeRendererProps {
-    recipe: BaseRecipeInterface
+    recipe: BaseRecipeInterface | GTRecipeInterface
+    recipeType: string
 }
 
 const scaleFactor = 1.25
@@ -22,29 +30,73 @@ const boxCountToGridSize = (boxSize: number) => {
 const FallbackRecipeRenderer = (props: FallbackRecipeRendererProps) => {
     // Renders a recipe as a grid -> grid (no darkUI asset)
 
+    const baseRecipe = props.recipeType === 'GT' ? (props.recipe as GTRecipeInterface).baseRecipe : (props.recipe as BaseRecipeInterface)
+
     // Compute overall recipe grid attributes
-    const maxInputBoxWidth = Math.max(props.recipe.dimensions.itemInputDims.width, props.recipe.dimensions.fluidInputDims.width)
+    const maxInputBoxWidth = Math.max(baseRecipe.dimensions.itemInputDims.width, baseRecipe.dimensions.fluidInputDims.width)
     const inputWidth = boxCountToGridSize(maxInputBoxWidth)
 
-    const maxOutputBoxWidth = Math.max(props.recipe.dimensions.itemOutputDims.width, props.recipe.dimensions.fluidOutputDims.width)
+    const maxOutputBoxWidth = Math.max(baseRecipe.dimensions.itemOutputDims.width, baseRecipe.dimensions.fluidOutputDims.width)
     const outputWidth = boxCountToGridSize(maxOutputBoxWidth)
 
     const inputHeight = (
-        boxCountToGridSize(props.recipe.dimensions.itemInputDims.height) 
-        + boxCountToGridSize(props.recipe.dimensions.fluidInputDims.height)
+        boxCountToGridSize(baseRecipe.dimensions.itemInputDims.height) 
+        + boxCountToGridSize(baseRecipe.dimensions.fluidInputDims.height)
         + gap
     )
     const outputHeight = (
-        boxCountToGridSize(props.recipe.dimensions.itemOutputDims.height)
-        + boxCountToGridSize(props.recipe.dimensions.fluidOutputDims.height)
+        boxCountToGridSize(baseRecipe.dimensions.itemOutputDims.height)
+        + boxCountToGridSize(baseRecipe.dimensions.fluidOutputDims.height)
         + gap
     )
     const maxHeight = Math.max(inputHeight, outputHeight)
 
+    // Compute GT recipe info (if applicable)
+    var GTRecipeInfo = <></>
+    if (props.recipeType === 'GT') {
+        /* 
+        A usual GT recipe string looks like:
+        Total: 60,000 EU
+        Voltage: 600 EU/t (EV)
+        Time: 5 secs
+
+        There are optional fields that get added contextually:
+        Needs Cleanroom
+        Needs Low Gravity
+        Heat Capacity: 3,000 K (Nichrome)
+        Amperage: 3
+        Time: 0.8 secs (16 ticks)
+        Start: 60,000,000 EU (MK 1)
+        */
+        const recipe = props.recipe as GTRecipeInterface
+        let infoBuffer: string[] = []
+
+        const totalEU = recipe.amperage * recipe.voltage * recipe.durationTicks
+        const tickInfo = recipe.durationTicks < 20 ? ` (${recipe.durationTicks} ticks)` : ''
+
+        infoBuffer.push(`Total: ${totalEU} EU`)
+        infoBuffer.push(`Voltage: ${recipe.voltage} EU/t`)
+        infoBuffer.push(`Time: ${recipe.durationTicks / 20} secs${tickInfo}`)
+        if (recipe.requiresCleanroom) {
+            infoBuffer.push(`Needs Cleanroom`)
+        }
+        if (recipe.requiresLowGravity) {
+            infoBuffer.push(`Needs Low Gravity`)
+        }
+        if (recipe.additionalInfo) {
+            infoBuffer.push(recipe.additionalInfo)
+        }
+
+        GTRecipeInfo = (
+            <p class="gtinfo" style="color:white">
+                {infoBuffer.join('\n')}
+            </p>
+        )
+    }
 
     // Construct single recipe grid
     return (
-        <Box paddingBottom={recipePadding}>
+        <Box className="fallback" marginBottom={recipePadding}>
             <Grid
                 templateColumns={
                     `
@@ -58,10 +110,10 @@ const FallbackRecipeRenderer = (props: FallbackRecipeRendererProps) => {
             >
                 <Center>
                     <ItemAndFluidGrid
-                        items={props.recipe.inputItems}
-                        fluids={props.recipe.inputFluids}
-                        itemDims={props.recipe.dimensions.itemInputDims}
-                        fluidDims={props.recipe.dimensions.fluidInputDims}
+                        items={baseRecipe.inputItems}
+                        fluids={baseRecipe.inputFluids}
+                        itemDims={baseRecipe.dimensions.itemInputDims}
+                        fluidDims={baseRecipe.dimensions.fluidInputDims}
                     />
                 </Center>
 
@@ -71,13 +123,14 @@ const FallbackRecipeRenderer = (props: FallbackRecipeRendererProps) => {
 
                 <Center>
                     <ItemAndFluidGrid
-                        items={props.recipe.outputItems}
-                        fluids={props.recipe.outputFluids}
-                        itemDims={props.recipe.dimensions.itemOutputDims}
-                        fluidDims={props.recipe.dimensions.fluidOutputDims}
+                        items={baseRecipe.outputItems}
+                        fluids={baseRecipe.outputFluids}
+                        itemDims={baseRecipe.dimensions.itemOutputDims}
+                        fluidDims={baseRecipe.dimensions.fluidOutputDims}
                     />
                 </Center>
             </Grid>
+            {GTRecipeInfo}
         </Box>
     );
 }

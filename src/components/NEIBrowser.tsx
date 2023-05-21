@@ -172,20 +172,22 @@ function NEIBrowser() {
   })
 
   return (
-    // Why "as" cast to AssociatedRecipesInterface?
+    // Why "@ts-ignore"?
     // For some reason Typescript doesn't recognize that the graphql output is
     //  guaranteed to be defined (as AssociatedRecipes) when the query is not loading.
 
     <>
       <Show when={appState.currentBasicSidebarItem.makeOrUse === "make"}>
         <Show when={!makeData.loading}>
+          {/* @ts-ignore */}
           <MachineTabs
-            {...(makeData()?.getRecipesThatMakeSingleId as AssociatedRecipesInterface)}
+            {...(makeData()?.getRecipesThatMakeSingleId)}
           />
         </Show>
       </Show>
       <Show when={appState.currentBasicSidebarItem.makeOrUse === "use"}>
         <Show when={!useData.loading}>
+          {/* @ts-ignore */}
           <MachineTabs
             {...(useData()?.getRecipesThatUseSingleId as AssociatedRecipesInterface)}
           />

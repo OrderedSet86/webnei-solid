@@ -3,31 +3,43 @@ import { Box, Center, Grid, Tooltip, Tabs, TabList, Tab, TabPanel } from "@hope-
 
 import FallbackRecipeRenderer from "./FallbackRecipeRenderer"
 import { appState, setAppState } from '~/state/appState'
-import { AssociatedRecipesInterface, BaseRecipeInterface } from "./Interfaces"
+import { AssociatedRecipesInterface, BaseRecipeInterface, GTRecipeInterface } from "./Interfaces"
 
 
 const MachineTabs = (props: AssociatedRecipesInterface) => {
 
     if (props.GTRecipes && props.OtherRecipes) {
-        const allRecipes = props.OtherRecipes.concat(
-            props.GTRecipes.map((recipe) => recipe.baseRecipe)
-        )
+        const allRecipes: [string, BaseRecipeInterface | GTRecipeInterface][] = []
+        for (const recipe of props.OtherRecipes) {
+            allRecipes.push(['Other', recipe])
+        }
+        for (const recipe of props.GTRecipes) {
+            allRecipes.push(['GT', recipe])
+        }
 
         // Group recipes by icon_id
-        const iconToRecipes = new Map<string, Array<BaseRecipeInterface>>();
-        for (const recipe of allRecipes) {
-            const iconId = recipe.iconId;
+        const iconToRecipes = new Map<string, [string, BaseRecipeInterface | GTRecipeInterface][]>();
+        for (const data of allRecipes) {
+            const recipeType = data[0]
+            const recipe = data[1]
+            const baseRecipe = recipeType === 'GT' ? (recipe as GTRecipeInterface).baseRecipe : (recipe as BaseRecipeInterface)
+
+            const iconId = baseRecipe.iconId;
             if (iconToRecipes.has(iconId)) {
-                iconToRecipes.get(iconId)?.push(recipe);
+                iconToRecipes.get(iconId)?.push(data);
             }
             else {
-                iconToRecipes.set(iconId, [recipe]);
+                iconToRecipes.set(iconId, [data]);
             }
         }
 
         const iconToLocalizedName = new Map<string, string>();
-        for (const recipe of allRecipes) {
-            iconToLocalizedName.set(recipe.iconId, recipe.recipeType);
+        for (const data of allRecipes) {
+            const recipeType = data[0]
+            const recipe = data[1]
+            const baseRecipe = recipeType === 'GT' ? (recipe as GTRecipeInterface).baseRecipe : (recipe as BaseRecipeInterface)
+
+            iconToLocalizedName.set(baseRecipe.iconId, baseRecipe.recipeType);
         }
 
         const indexKeys = Array.from(iconToRecipes.keys());
@@ -51,7 +63,10 @@ const MachineTabs = (props: AssociatedRecipesInterface) => {
                                 <TabPanel>
                                     <Index each={associated_recipes}>
                                         {(recipe, index) => (
-                                            <FallbackRecipeRenderer recipe={recipe()} />
+                                            <FallbackRecipeRenderer
+                                                recipeType={recipe()[0]}
+                                                recipe={recipe()[1]}
+                                            />
                                         )}
                                     </Index>
                                 </TabPanel>
