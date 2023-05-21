@@ -35,21 +35,29 @@ function ClickableItem(props: ClickableItemProps) {
   // R: look up sources of item
   // U: look up uses of item
 
-  const handleMakeClick = (event: MouseEvent) => {
+  const handleMakeClick = (event: MouseEvent | undefined) => {
     if (props.basic_display_info) {
       setAppState(produce((s) => {
-        s.currentBasicSidebarItem = props.basic_display_info;
-        s.makeOrUse = "make";
+        s.currentBasicSidebarItem = props.basic_display_info
+        s.makeOrUse = "make"
       }));
     }
   }
 
-  const handleUseClick = (event: MouseEvent) => {
+  const handleUseClick = (event: MouseEvent | undefined) => {
     if (props.basic_display_info) {
       setAppState(produce((s) => {
-        s.currentBasicSidebarItem = props.basic_display_info;
-        s.makeOrUse = "use";
+        s.currentBasicSidebarItem = props.basic_display_info
+        s.makeOrUse = "use"
       }));
+    }
+  }
+
+  const handleKey = (event: KeyboardEvent) => {
+    if (event.key === 'r' || event.key === 'R') {
+      handleMakeClick(undefined);
+    } else if (event.key === 'u' || event.key === 'U') {
+      handleUseClick(undefined);
     }
   }
 
@@ -109,6 +117,8 @@ function ClickableItem(props: ClickableItemProps) {
       class={divClassName} 
       onClick ={(event) => {handleMakeClick(event)}}
       onContextMenu={(event) => {handleUseClick(event)}}
+      onMouseEnter={(event) => {document.addEventListener("keydown", handleKey)}}
+      onMouseLeave={(event) => {document.removeEventListener("keydown", handleKey)}}
       children={insideElements}
     />
   )
