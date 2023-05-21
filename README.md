@@ -13,5 +13,3 @@
 5. Check backend is working with `python main.py` and navigating to http://localhost:5000/graphql
 6. Clone this (frontend) repo
 7. npm i
-8. npm run dev -- --open
-9. Note that for now, a ton of file watchers are created - you may need to increase the number of file watchers using `sudo sysctl fs.inotify.max_user_watches=524288`
