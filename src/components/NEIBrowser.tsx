@@ -163,9 +163,9 @@ function NEIBrowser() {
     // When a new appState.currentBasicSidebarItem is set, check if it is "make" or "use"
     // Then update the relevant GraphQL query input
     if (appState.currentBasicSidebarItem.itemId) {
-      if (appState.currentBasicSidebarItem.makeOrUse === "make") {
+      if (appState.makeOrUse === "make") {
         setMakeInput(appState.currentBasicSidebarItem.itemId)
-      } else if (appState.currentBasicSidebarItem.makeOrUse === "use") {
+      } else if (appState.makeOrUse === "use") {
         setUseInput(appState.currentBasicSidebarItem.itemId)
       }
     }
@@ -177,7 +177,7 @@ function NEIBrowser() {
     //  guaranteed to be defined (as AssociatedRecipes) when the query is not loading.
 
     <>
-      <Show when={appState.currentBasicSidebarItem.makeOrUse === "make"}>
+      <Show when={appState.makeOrUse === "make"}>
         <Show when={!makeData.loading}>
           {/* @ts-ignore */}
           <MachineTabs
@@ -185,7 +185,7 @@ function NEIBrowser() {
           />
         </Show>
       </Show>
-      <Show when={appState.currentBasicSidebarItem.makeOrUse === "use"}>
+      <Show when={appState.makeOrUse === "use"}>
         <Show when={!useData.loading}>
           {/* @ts-ignore */}
           <MachineTabs

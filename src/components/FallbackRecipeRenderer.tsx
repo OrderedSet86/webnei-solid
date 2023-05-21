@@ -74,9 +74,9 @@ const FallbackRecipeRenderer = (props: FallbackRecipeRendererProps) => {
         const totalEU = recipe.amperage * recipe.voltage * recipe.durationTicks
         const tickInfo = recipe.durationTicks < 20 ? ` (${recipe.durationTicks} ticks)` : ''
 
-        infoBuffer.push(`Total: ${totalEU} EU`)
-        infoBuffer.push(`Voltage: ${recipe.voltage} EU/t`)
-        infoBuffer.push(`Time: ${recipe.durationTicks / 20} secs${tickInfo}`)
+        infoBuffer.push(`Total: ${totalEU.toLocaleString()} EU`)
+        infoBuffer.push(`Voltage: ${recipe.voltage.toLocaleString()} EU/t (${recipe.voltageTier})`)
+        infoBuffer.push(`Time: ${(recipe.durationTicks / 20).toLocaleString()} secs${tickInfo}`)
         if (recipe.requiresCleanroom) {
             infoBuffer.push(`Needs Cleanroom`)
         }

@@ -83,7 +83,7 @@ export interface GTRecipeInterface {
     requiresCleanroom: boolean
     requiresLowGravity: boolean
     voltage: number
-    voltage_tier: string
+    voltageTier: string
 }
 
 export interface AssociatedRecipesInterface {
@@ -93,8 +93,8 @@ export interface AssociatedRecipesInterface {
 }
 
 export interface SidebarItemInterface {
-    itemId: string
-    imageFilePath: string
-    localizedName: string
-    tooltip: string
+    itemId?: string
+    imageFilePath?: string
+    localizedName?: string
+    tooltip?: string
 }

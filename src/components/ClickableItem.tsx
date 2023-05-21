@@ -39,7 +39,7 @@ function ClickableItem(props: ClickableItemProps) {
     if (props.basic_display_info) {
       setAppState(produce((s) => {
         s.currentBasicSidebarItem = props.basic_display_info;
-        s.currentBasicSidebarItem.makeOrUse = "make";
+        s.makeOrUse = "make";
       }));
     }
   }
@@ -48,7 +48,7 @@ function ClickableItem(props: ClickableItemProps) {
     if (props.basic_display_info) {
       setAppState(produce((s) => {
         s.currentBasicSidebarItem = props.basic_display_info;
-        s.currentBasicSidebarItem.makeOrUse = "use";
+        s.makeOrUse = "use";
       }));
     }
   }
@@ -68,25 +68,25 @@ function ClickableItem(props: ClickableItemProps) {
 
   const insideElements = (
     <>
-      <Center h={fullClickableWidth} w={fullClickableWidth}>
-        <Show when={props.basic_display_info} fallback={<></>}>
-          <Tooltip
-            className="tooltip"
-            label={props.tooltipLabel.replaceAll("\\u000a", "\u000a")}
-            placement="right" 
-            closeOnClick={false}
-            overflow="hidden"
-          >
-              <img
-                src={`${baseImagePath}/${props.basic_display_info.imageFilePath}`}
-                width={imageWidth}
-                height={imageWidth}
-                loading="lazy"
-                decoding="async"
-              />
-          </Tooltip>
-        </Show>
-      </Center>
+      <Show when={props.basic_display_info} fallback={<></>}>
+        <Tooltip
+          className="tooltip"
+          label={props.tooltipLabel.replaceAll("\\u000a", "\u000a")}
+          placement="right" 
+          closeOnClick={false}
+          overflow="hidden"
+        >
+          <Center h={fullClickableWidth} w={fullClickableWidth}>
+            <img
+              src={`${baseImagePath}/${props.basic_display_info.imageFilePath}`}
+              width={imageWidth}
+              height={imageWidth}
+              loading="lazy"
+              decoding="async"
+            />
+          </Center>
+        </Tooltip>
+      </Show>
       <Show when={props.advanced_display_info} fallback={<></>}>
         <Box
           position="absolute"
