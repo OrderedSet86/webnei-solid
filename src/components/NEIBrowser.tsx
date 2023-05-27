@@ -6,6 +6,8 @@ import {
 import { appState, setAppState } from '~/state/appState'
 import { gql, createGraphQLClient } from "@solid-primitives/graphql"
 
+import { Button, Box } from "@hope-ui/solid"
+
 import MachineTabs from "./MachineTabs"
 import { AssociatedRecipesInterface } from "./Interfaces";
 
@@ -191,6 +193,17 @@ function NEIBrowser() {
           <MachineTabs
             {...(useData()?.getRecipesThatUseSingleId as AssociatedRecipesInterface)}
           />
+
+          {/* @ts-ignore */}
+          <Show when={
+            (useData()?.getRecipesThatUseSingleId as AssociatedRecipesInterface).GTRecipes.length == 100
+            ||
+            (useData()?.getRecipesThatUseSingleId as AssociatedRecipesInterface).OtherRecipes.length == 100
+          }>
+            <Button colorScheme="warning">Load all recipes (may take a LONG time)</Button>
+            { /* TODO: onclick resend last query but with no limit */ }
+            <Box height="100px"></Box>
+          </Show>
         </Show>
       </Show>
     </>
