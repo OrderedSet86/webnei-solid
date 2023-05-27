@@ -95,7 +95,13 @@ function ClickableItem(props: ClickableItemProps) {
           </Center>
         </Tooltip>
       </Show>
-      <Show when={props.advanced_display_info} fallback={<></>}>
+      <Show 
+        when={
+          props.advanced_display_info && 
+            (props.advanced_display_info.quantity > 1 || props.advanced_display_info.clickableType == "fluid")
+        }
+        fallback={<></>}
+      >
         <Box
           position="absolute"
           bottom={0}
