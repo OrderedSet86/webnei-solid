@@ -2,40 +2,40 @@ import { createSignal } from "solid-js"
 import { gql, createGraphQLClient } from "@solid-primitives/graphql"
 
 import {
-    AssociatedRecipesInterface,
-    BasicDimensionsInterface,
-    RecipeDimensionInterface,
-    ItemInterface,
-    FluidInterface,
-    BaseRecipeInterface,
-    GTRecipeInterface,
-    SidebarItemInterface,
+  AssociatedRecipesInterface,
+  BasicDimensionsInterface,
+  RecipeDimensionInterface,
+  ItemInterface,
+  FluidInterface,
+  BaseRecipeInterface,
+  GTRecipeInterface,
+  SidebarItemInterface,
 } from "./Interfaces"
 
 
 export interface getGTRecipeByRecipeIdInterface {
-    getGTRecipeByRecipeId: GTRecipeInterface
+  getGTRecipeByRecipeId: GTRecipeInterface
 }
 
 export interface getNSidebarItemsInterface {
-    getNSidebarItems: Array<SidebarItemInterface>
+  getNSidebarItems: Array<SidebarItemInterface>
 }
 
 export interface getRecipesThatMakeSingleIdInterface {
-    getRecipesThatMakeSingleId: AssociatedRecipesInterface
+  getRecipesThatMakeSingleId: AssociatedRecipesInterface
 }
 
 export interface getRecipesThatUseSingleIdInterface {
-    getRecipesThatUseSingleId: AssociatedRecipesInterface
+  getRecipesThatUseSingleId: AssociatedRecipesInterface
 }
 
 
 const gqlInputCache = createSignal<Array<Record<string, string | number | boolean>>>([])
 const gqlOutputCache = createSignal<Array<
-    getGTRecipeByRecipeIdInterface 
-    | getNSidebarItemsInterface
-    | getRecipesThatMakeSingleIdInterface
-    | getRecipesThatUseSingleIdInterface
+  getGTRecipeByRecipeIdInterface 
+  | getNSidebarItemsInterface
+  | getRecipesThatMakeSingleIdInterface
+  | getRecipesThatUseSingleIdInterface
 >>([])
 
 
@@ -48,8 +48,8 @@ export const useOutput = createSignal<AssociatedRecipesInterface>()
 
 
 const GraphQLManager = () => {
-    // Stores a cache of the last 10 queries (inputs and outputs)
-    const graphQLClient = createGraphQLClient("http://localhost:5000/graphql")
+  // Stores a cache of the last 10 queries (inputs and outputs)
+  const graphQLClient = createGraphQLClient("http://localhost:5000/graphql")
 
 
 
