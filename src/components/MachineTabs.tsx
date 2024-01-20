@@ -47,7 +47,7 @@ const MachineTabs = (props: AssociatedRecipesInterface) => {
     return (
       <>
         <Tabs colorScheme={"accent"} marginTop={10} marginLeft={5} marginRight={5}>
-          <TabList>
+          <TabList overflowX={"auto"} overflowY={"hidden"}>
             <Index each={indexKeys}>
               {(iconId, index) => (
                 <Tab>

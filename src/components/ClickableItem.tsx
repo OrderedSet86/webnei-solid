@@ -63,9 +63,19 @@ function ClickableItem(props: ClickableItemProps) {
 
   const fullClickableWidth = (appState.imageWidth + 2) * props.scaleFactor;
   const imageWidth = appState.imageWidth * props.scaleFactor;
-  let quantityLabel = props.advanced_display_info ? props.advanced_display_info.quantity.toString() : "";
-  if (props.advanced_display_info && props.advanced_display_info.clickableType == "fluid") {
-    quantityLabel = quantityLabel + "L";
+  let quantityLabel = "";
+  if (props.advanced_display_info) {
+    const quant = props.advanced_display_info.quantity;
+    quantityLabel = props.advanced_display_info.quantity.toString();
+    if (props.advanced_display_info.clickableType == "fluid") {
+      if (quant >= 1_000_000) {
+        quantityLabel = (quant / 1_000_000).toFixed(0) + "ML";
+      } else if (quant >= 1_000) {
+        quantityLabel = (quant / 1_000).toFixed(0) + "kL";
+      } else {
+        quantityLabel = quantityLabel + "L";
+      }
+    }
   }
 
   const divClassName = props.divClass ? props.divClass : "cellNoOutline";
@@ -79,7 +89,7 @@ function ClickableItem(props: ClickableItemProps) {
       <Show when={props.basic_display_info} fallback={<></>}>
         <Tooltip
           className="tooltip"
-          label={props.tooltipLabel.replaceAll("\\u000a", "\u000a")}
+          label={JSON.parse(`{"str": "${props.tooltipLabel}"}`).str} // This fixes escaped unicode
           placement="right" 
           closeOnClick={false}
           overflow="hidden"
